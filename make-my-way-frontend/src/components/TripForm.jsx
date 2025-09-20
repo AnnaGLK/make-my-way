@@ -218,14 +218,14 @@ export default function TripForm() {
               <h2 className="tripform-title">Start your journey</h2>
             </div>
             <div>
-              <p className="tripform-sub text-center">Choose your activities and food preferences</p>
+              <p className="tripform-sub text-center">Choose your preferences</p>
               <label className="form-label">Pick up to 4 activities</label>
               <div className="options-grid">
                 {ACTIVITIES.map((a) => (
                   <button
                     key={a}
                     type="button"
-                    className={`option-btn ${formData.activities.includes(a) ? "active" : ""}`}
+                    className={`act-btn ${formData.activities.includes(a) ? "active" : ""}`}
                     onClick={() => toggleArrayValue("activities", a, 4)}
                   >
                     {a}
@@ -239,7 +239,7 @@ export default function TripForm() {
                   <button
                     key={f}
                     type="button"
-                    className={`option-btn ${formData.food.includes(f) ? "active" : ""}`}
+                    className={`act-btn ${formData.food.includes(f) ? "active" : ""}`}
                     onClick={() => toggleArrayValue("food", f, 2)}
                   >
                     {f}
