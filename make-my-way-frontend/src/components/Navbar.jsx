@@ -7,8 +7,8 @@ export default function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top shadow-sm">
       <div className="container-fluid">
         <NavLink to="/" className="navbar-brand d-flex align-items-center">
-          <img src=".././media/favicon.png" alt="MakeMyWay" width="36" height="36" className="me-2 rounded" />
-          <span className="fw-bold">MakeMyWay</span>
+          <img src="/media/logo.png" alt="MakeMyWay" width="auto" height="36" className="me-2" />
+        
         </NavLink>
 
         <button
@@ -35,11 +35,11 @@ export default function Navbar() {
                 Results
               </NavLink>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <NavLink to="/dashboard" className={({ isActive }) => 'nav-link px-3' + (isActive ? ' active' : '')}>
                 Dashboard
               </NavLink>
-            </li>
+            </li> */}
             <li className="nav-item">
               <NavLink to="/login" className={({ isActive }) => 'nav-link px-3' + (isActive ? ' active' : '')}>
                 Login

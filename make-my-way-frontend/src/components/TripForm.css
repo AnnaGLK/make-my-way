@@ -1,0 +1,200 @@
+/* src/components/TripForm.css */
+
+/* Load Jost font */
+@import url("https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=swap");
+
+:root {
+  --brand: #00c16d;
+  --brand-dark: #00a95d;
+  --text: #343633;
+  --muted: #7a7a7a;
+  --card-bg: #ffffff;
+  --radius: 14px;
+}
+
+/* Wrapper card */
+.tripform-wrapper {
+  max-width: 680px;
+  margin: 1.5rem auto;
+  /* padding: 1.4rem; */
+  background: var(--card-bg);
+  /* border-radius: var(--radius);
+  box-shadow: 0 10px 30px rgba(20, 20, 20, 0.06); */
+  font-family: "Jost", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial;
+  color: var(--text);
+}
+
+/* Header */
+.tripform-header {
+  text-align: center;
+  margin-bottom: 1rem;
+  height: 20vh;
+  background-image: srl("/media/hero1.jpg");
+}
+
+.tripform-title {
+  font-size: 1.9rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+
+.tripform-sub {
+  margin: 0.25rem 0 0.9rem;
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+
+/* Form layout */
+.tripform-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+/* Labels & inputs */
+.form-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+/* Use bootstrap .form-control plus custom styling */
+.form-control {
+  width: 100%;
+  padding: 0.82rem 0.95rem;
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+  font-size: 1rem;
+  color: var(--text);
+  background: #fff;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  box-sizing: border-box;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 6px rgba(0, 193, 109, 0.08);
+}
+
+/* Days text */
+.trip-days {
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+
+/* Options grid (buttons as pills) */
+.options-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.option-btn {
+  position: relative;
+  flex: 1 1 calc(50% - 16px);
+  height: 150px;
+  border: none;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+  /* color: #fff; */
+  color: var(--text);
+  font-family: "Jost", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.option-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(52, 54, 51, 0.45);
+  border-radius: 12px;
+}
+.option-label {
+  position: relative;
+  z-index: 1;
+}
+
+.option-btn.active,
+.option-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 193, 109, 0.4);
+}
+
+.option-btn.active::before {
+  background: rgba(0, 193, 109, 0.6);
+}
+
+.tripform-actions {
+  display: flex;
+  gap: 0.7rem;
+  margin-top: 0.6rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.trip-btn {
+  flex: 1 1 auto;
+  padding: 0.78rem 1rem;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+/* override bootstrap colors: primary & success to brand */
+.btn-primary.trip-btn,
+.btn-success.trip-btn {
+  background-color: var(--brand) !important;
+  border-color: var(--brand) !important;
+  color: #fff !important;
+  box-shadow: 0 8px 22px rgba(0, 193, 109, 0.12);
+}
+
+.btn-primary.trip-btn:hover,
+.btn-success.trip-btn:hover {
+  background-color: var(--brand-dark) !important;
+  border-color: var(--brand-dark) !important;
+  transform: translateY(-2px);
+}
+
+/* Secondary button style */
+.btn-secondary.trip-btn {
+  background: #f0f0f0;
+  color: var(--text);
+  border: 1px solid #e6e6e6;
+}
+
+.btn-secondary.trip-btn:hover {
+  background: #e6e6e6;
+  transform: translateY(-2px);
+}
+
+/* Small screens */
+@media (max-width: 576px) {
+  .tripform-wrapper {
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 12px;
+  }
+  .option-btn {
+    flex: 1 1 calc(50% - 12px);
+    height: 120px;
+    font-size: 18px;
+  }
+  .tripform-title {
+    font-size: 1.5rem;
+  }
+}
