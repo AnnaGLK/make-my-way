@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import "./TripForm.css";
 import { planTrip } from "../services/api"; // keep if you have this service
+import { searchCities } from "../api/geoDB"; // keep if you have this service
 
 const TRAVEL_STYLES = ["Urban Explorer", "Culture & History", "Chill & Relax", "Adventure Mode"];
 const TRAVEL_MODES = ["driving", "bike", "walk"];
@@ -58,12 +59,16 @@ export default function TripForm() {
         await planTrip(formData);
       }
       alert("Trip planned successfully!");
-      // you can reset or redirect here
+
     } catch (err) {
       console.error("Plan trip error:", err);
       alert("Failed to plan trip.");
     }
   };
+
+  const [originSuggestions, setOriginSuggestions] = useState([]);
+  const [destinationSuggestions, setDestinationSuggestions] = useState([]);
+
 
   return (
     <div className="tripform-wrapper">
@@ -73,71 +78,77 @@ export default function TripForm() {
         {/* Step 1: Origin & Destination */}
         {step === 1 && (
           <div className="tripform-step">
-            <label className="form-label">Origin</label>
-            <input
-              className="form-control"
-              type="text"
-              placeholder="Enter origin (city or country)"
-              value={formData.origin}
-              onChange={async (e) => {
-                const value = e.target.value;
-                handleChange("origin", value);
-                if (value.length > 2) {
-                  const results = await searchCities(value);
-                  setOriginSuggestions(results);
-                } else {
-                  setOriginSuggestions([]);
-                }
-              }}
-            />
-            {originSuggestions.length > 0 && (
-              <ul className="suggestions-list">
-                {originSuggestions.map((c) => (
-                  <li
-                    key={c.id}
-                    onClick={() => {
-                      handleChange("origin", `${c.city}, ${c.country}`);
-                      setOriginSuggestions([]);
-                    }}
-                  >
-                    {c.city}, {c.country}
-                  </li>
-                ))}
-              </ul>
-            )}
+            <div className="tripform-header">
+              <h2 className="tripform-title">Start your journey</h2>
+            </div>
+            <div>
+              <p className="tripform-sub text-center">Please tell us your destinations</p>
+              <label className="form-label">Origin</label>
+              <input
+                className="form-control"
+                type="text"
+                placeholder="Enter origin (city or country)"
+                value={formData.origin}
+                onChange={async (e) => {
+                  const value = e.target.value;
+                  handleChange("origin", value);
+                  if (value.length > 2) {
+                    const results = await searchCities(value);
+                    setOriginSuggestions(results);
+                  } else {
+                    setOriginSuggestions([]);
+                  }
+                }}
+              />
+              {originSuggestions.length > 0 && (
+                <ul className="suggestions-list">
+                  {originSuggestions.map((c) => (
+                    <li
+                      key={c.id}
+                      onClick={() => {
+                        handleChange("origin", `${c.city}, ${c.country}`);
+                        setOriginSuggestions([]);
+                      }}
+                    >
+                      {c.city}, {c.country}
+                    </li>
+                  ))}
+                </ul>
+              )}
 
-            <label className="form-label">Destination</label>
-            <input
-              className="form-control"
-              type="text"
-              placeholder="Enter destination (city or country)"
-              value={formData.destination}
-              onChange={async (e) => {
-                const value = e.target.value;
-                handleChange("destination", value);
-                if (value.length > 2) {
-                  const results = await searchCities(value);
-                  setDestinationSuggestions(results);
-                } else {
-                  setDestinationSuggestions([]);
-                }
-              }}
-            />
-            {destinationSuggestions.length > 0 && (
-              <ul className="suggestions-list">
-                {destinationSuggestions.map((c) => (
-                  <li
-                    key={c.id}
-                    onClick={() => {
-                      handleChange("destination", `${c.city}, ${c.country}`);
-                      setDestinationSuggestions([]);
-                    }}
-                  >
-                    {c.city}, {c.country}
-                  </li>
-                ))}
-              </ul>
-            )}
+              <label className="form-label">Destination</label>
+              <input
+                className="form-control"
+                type="text"
+                placeholder="Enter destination (city or country)"
+                value={formData.destination}
+                onChange={async (e) => {
+                  const value = e.target.value;
+                  handleChange("destination", value);
+                  if (value.length > 2) {
+                    const results = await searchCities(value);
+                    setDestinationSuggestions(results);
+                  } else {
+                    setDestinationSuggestions([]);
+                  }
+                }}
+              />
+              {destinationSuggestions.length > 0 && (
+                <ul className="suggestions-list">
+                  {destinationSuggestions.map((c) => (
+                    <li
+                      key={c.id}
+                      onClick={() => {
+                        handleChange("destination", `${c.city}, ${c.country}`);
+                        setDestinationSuggestions([]);
+                      }}
+                    >
+                      {c.city}, {c.country}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
         )}
 
