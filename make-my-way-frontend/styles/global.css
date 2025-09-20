@@ -7,6 +7,9 @@
   --muted: #7a7a7a;
   --card-bg: #ffffff;
   --radius: 14px;
+    display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 body {
   font-family: 'Jost', sans-serif;
@@ -15,3 +18,4 @@ body {
   background-color: #f9f9f9;
   color: var(--text);
 }
+

@@ -72,35 +72,72 @@ export default function TripForm() {
       <form onSubmit={handleSubmit} className="tripform-form">
         {/* Step 1: Origin & Destination */}
         {step === 1 && (
-
           <div className="tripform-step">
-            <div className="tripform-header">
-              <h2 className="tripform-title">Start your journey</h2>
-            </div>
-            <div>
-              <p className="tripform-sub text-center">Please tell us your destinations</p>
-              <label className="form-label">Origin</label>
-              <input
-                className="form-control"
-                type="text"
-                name="origin"
-                placeholder="Enter origin (city or country)"
-                value={formData.origin}
-                onChange={(e) => handleChange("origin", e.target.value)}
-                required
-              />
+            <label className="form-label">Origin</label>
+            <input
+              className="form-control"
+              type="text"
+              placeholder="Enter origin (city or country)"
+              value={formData.origin}
+              onChange={async (e) => {
+                const value = e.target.value;
+                handleChange("origin", value);
+                if (value.length > 2) {
+                  const results = await searchCities(value);
+                  setOriginSuggestions(results);
+                } else {
+                  setOriginSuggestions([]);
+                }
+              }}
+            />
+            {originSuggestions.length > 0 && (
+              <ul className="suggestions-list">
+                {originSuggestions.map((c) => (
+                  <li
+                    key={c.id}
+                    onClick={() => {
+                      handleChange("origin", `${c.city}, ${c.country}`);
+                      setOriginSuggestions([]);
+                    }}
+                  >
+                    {c.city}, {c.country}
+                  </li>
+                ))}
+              </ul>
+            )}
 
-              <label className="form-label">Destination</label>
-              <input
-                className="form-control"
-                type="text"
-                name="destination"
-                placeholder="Enter destination (city or country)"
-                value={formData.destination}
-                onChange={(e) => handleChange("destination", e.target.value)}
-                required
-              />
-            </div>
+            <label className="form-label">Destination</label>
+            <input
+              className="form-control"
+              type="text"
+              placeholder="Enter destination (city or country)"
+              value={formData.destination}
+              onChange={async (e) => {
+                const value = e.target.value;
+                handleChange("destination", value);
+                if (value.length > 2) {
+                  const results = await searchCities(value);
+                  setDestinationSuggestions(results);
+                } else {
+                  setDestinationSuggestions([]);
+                }
+              }}
+            />
+            {destinationSuggestions.length > 0 && (
+              <ul className="suggestions-list">
+                {destinationSuggestions.map((c) => (
+                  <li
+                    key={c.id}
+                    onClick={() => {
+                      handleChange("destination", `${c.city}, ${c.country}`);
+                      setDestinationSuggestions([]);
+                    }}
+                  >
+                    {c.city}, {c.country}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         )}
 

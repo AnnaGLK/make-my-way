@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api", 
+  baseURL: "https://map-my-way-backend.onrender.com", 
   headers: {
     "Content-Type": "application/json",
   },
@@ -9,7 +9,7 @@ const API = axios.create({
 
 // --- AUTH ---
 export const signup = async (userData) => {
-  const { data } = await API.post("/auth/signup", userData);
+  const { data } = await API.post("/auth/register", userData);
   return data;
 };
 
