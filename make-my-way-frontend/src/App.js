@@ -14,7 +14,7 @@ export default function App() {
   return (
     <div className="app-root">
       <Navbar />
-      <main className="container-fluid px-2 px-md-4">
+      <main className="container-fluid px-0 px-md-0">
         <Suspense
           fallback={
             <div className="d-flex justify-content-center align-items-center" style={{ height: '40vh' }}>

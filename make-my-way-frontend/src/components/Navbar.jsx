@@ -7,7 +7,7 @@ export default function Navbar() {
         <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top shadow-sm">
             <div className="container-fluid">
                 <NavLink to="/" className="navbar-brand d-flex align-items-center">
-                    {/* <img src={process.env.PUBLIC_URL + '/media/logo.png'} alt="MakeMyWay" width="auto" height="36" className="me-2"/> */}
+                {/* <img src={process.env.PUBLIC_URL + '/media/logo.png'} alt="MakeMyWay" width="auto" height="36" className="me-2"/> */}
                 <img src="../media/logo.png" alt="MakeMyWay" width="auto" height="36" className="me-2"/>
                 </NavLink>
 

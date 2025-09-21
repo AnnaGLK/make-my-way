@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import "./TripForm.css";
 import { planTrip } from "../services/api"; // keep if you have this service
-import { searchCities } from "../api/geoDB"; // keep if you have this service
+import { searchCities } from "../services/geoDB"; // keep if you have this service
 
 const TRAVEL_STYLES = ["Urban Explorer", "Culture & History", "Chill & Relax", "Adventure Mode"];
 const TRAVEL_MODES = ["driving", "bike", "walk"];
@@ -81,7 +81,7 @@ export default function TripForm() {
             <div className="tripform-header">
               <h2 className="tripform-title">Start your journey</h2>
             </div>
-            <div>
+            <div className="tripform-body p-4">
               <p className="tripform-sub text-center">Please tell us your destinations</p>
               <label className="form-label">Origin</label>
               <input
@@ -92,8 +92,10 @@ export default function TripForm() {
                 onChange={async (e) => {
                   const value = e.target.value;
                   handleChange("origin", value);
+                  console.log("Searching for:", value);
                   if (value.length > 2) {
                     const results = await searchCities(value);
+
                     setOriginSuggestions(results);
                   } else {
                     setOriginSuggestions([]);
