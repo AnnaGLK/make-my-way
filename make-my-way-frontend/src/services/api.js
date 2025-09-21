@@ -8,7 +8,7 @@ const API = axios.create({
 });
 
 // --- AUTH ---
-export const signup = async (userData) => {
+export const register = async (userData) => {
   const { data } = await API.post("/auth/register", userData);
   return data;
 };
@@ -17,10 +17,26 @@ export const login = async (credentials) => {
   const { data } = await API.post("/auth/login", credentials);
 
   if (data.token) {
-    localStorage.setItem("token", data.token);
+    // localStorage.setItem("token", data.token);
     API.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
   }
   return data;
+};
+
+export const logout = async () => {
+    const { data } = await API.post("/auth/logout");
+    localStorage.removeItem("token");
+    delete API.defaults.headers.common["Authorization"];
+    return data;
+};
+
+export const refresh = async () => {
+    const { data } = await API.post("/auth/refresh");
+    if (data.token) {
+        localStorage.setItem("token", data.token);
+        API.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+    }
+    return data;
 };
 
 // --- TRIP PLANNING ---
