@@ -1,7 +1,8 @@
 import axios from "axios";
 
 // const BASE_URL = process.env.GEO_URL
-const API_KEY = process.env.GEO_API_KEY
+const API_BASE_URL = process.env.REACT_APP_RAPID_API_BASE_URL;
+const API_KEY = process.env.REACT_APP_GEO_API_KEY
 
 // const geoDB = axios.create({
 //   baseURL: BASE_URL,
@@ -48,21 +49,21 @@ const API_KEY = process.env.GEO_API_KEY
 
 
 export async function searchCities(prefix) {
-  const options = {
-    method: "GET",
-    url: "https://wft-geo-db.p.rapidapi.com/v1/geo/cities",
-    params: { namePrefix: prefix },  // <-- send the prefix here
-    headers: {
-      "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
-      "x-rapidapi-key": API_KEY, // don't forget this!
-    },
-  };
+    const options = {
+        method: "GET",
+        url: API_BASE_URL + "/geo/cities",
+        params: {namePrefix: prefix},  // <-- send the prefix here
+        headers: {
+            "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
+            "x-rapidapi-key": API_KEY,
+        },
+    };
 
-  try {
-    const response = await axios.request(options);
-    console.log(response.data.data); // list of matching places
-    return response.data.data;
-  } catch (error) {
-    console.error(error);
-  }
+    try {
+        const response = await axios(options);
+        console.log(response.data.data); // list of matching places
+        return response.data.data;
+    } catch (error) {
+        console.error(error);
+    }
 }
