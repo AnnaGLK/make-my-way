@@ -27,7 +27,7 @@ export default function TripForm() {
     });
 
     const handleChange = useCallback((field, value) => {
-        setFormData((prev) => ({ ...prev, [field]: value }));
+        setFormData((prev) => ({...prev, [field]: value}));
     }, []);
 
     const handleDateChange = (field, value) => {
@@ -73,29 +73,29 @@ export default function TripForm() {
     const handleOriginDebouncedChange = useCallback(
         async (value) => {
             handleChange('origin', value);
-            console.log('Searching for:', value);
             if (value.length > 2) {
+                console.log('Searching for:', value);
                 const results = await searchCities(value);
                 setOriginSuggestions(results);
             } else {
                 setOriginSuggestions([]);
             }
         },
-        [handleChange, searchCities]
+        [handleChange]
     );
 
     const handleDestinationDebouncedChange = useCallback(
         async (value) => {
             handleChange('destination', value);
-            console.log('Searching for:', value);
             if (value.length > 2) {
+                console.log('Searching for:', value);
                 const results = await searchCities(value);
                 setDestinationSuggestions(results);
             } else {
                 setDestinationSuggestions([]);
             }
         },
-        [handleChange, searchCities]
+        [handleChange]
     );
 
     return (
