@@ -1,20 +1,26 @@
 import React, { useState, useEffect } from "react"
 import "./TripInfo.css"
-import { deleteTrip, inviteToTrip, getTripMembers, removeFromTrip } from "../services/api.js"
+import {
+  deleteTrip,
+  inviteToTrip,
+  getTripMembers,
+  removeFromTrip,
+  leaveSharedTrip,
+} from "../services/api.js"
 
 const formatDate = (dateString) => {
   if (!dateString) return ""
   return new Date(dateString).toLocaleDateString()
 }
 
-const TripInfo = ({ trip }) => {
+const TripInfo = ({ trip, isOwner }) => {
   const [inviteEmail, setInviteEmail] = useState("")
   const [members, setMembers] = useState([])
 
   const tripId = trip?.id || trip?._id
 
   useEffect(() => {
-    if (!tripId) return
+    if (!tripId || !isOwner) return
     const fetchMembers = async () => {
       try {
         const data = await getTripMembers(tripId)
@@ -24,7 +30,7 @@ const TripInfo = ({ trip }) => {
       }
     }
     fetchMembers()
-  }, [tripId])
+  }, [tripId, isOwner])
 
   if (!trip) return null
 
@@ -67,6 +73,19 @@ const TripInfo = ({ trip }) => {
     } catch (error) {
       console.error("Error removing member:", error)
       const message = error.response?.data?.error || "Failed to remove user."
+      alert(message)
+    }
+  }
+
+  const handleLeaveTrip = async () => {
+    if (!window.confirm("Are you sure you want to leave this trip?")) return
+    try {
+      await leaveSharedTrip(tripId)
+      alert("You left the trip.")
+      // тут можно обновить список в TripResultPage через пропс/refresh
+    } catch (error) {
+      console.error("Error leaving trip:", error)
+      const message = error.response?.data?.error || "Failed to leave trip."
       alert(message)
     }
   }
@@ -124,46 +143,53 @@ const TripInfo = ({ trip }) => {
 
       {/* Right column */}
       <div className="trip-actions">
-        <button className="delete-btn" onClick={handleDelete}>
-          Delete Trip
-        </button>
+        {isOwner ? (
+          <>
+            <button className="delete-btn" onClick={handleDelete}>
+              Delete Trip
+            </button>
 
-        <form onSubmit={handleInvite} className="invite-form">
-          <input
-            type="email"
-            placeholder="Invite user by email"
-            value={inviteEmail}
-            onChange={(e) => setInviteEmail(e.target.value)}
-          />
-          <button type="submit" className="invite-btn">
-            Invite
+            <form onSubmit={handleInvite} className="invite-form">
+              <input
+                type="email"
+                placeholder="Invite user by email"
+                value={inviteEmail}
+                onChange={(e) => setInviteEmail(e.target.value)}
+              />
+              <button type="submit" className="invite-btn">
+                Invite
+              </button>
+            </form>
+
+            <div className="members-list">
+              <h4>Members</h4>
+              {members.length > 0 ? (
+                <ul>
+                  {members.map((m) => (
+                    <li key={m.id} className="member-item">
+                      <div className="member-info">
+                        <div>{m.name}</div>
+                        <div>{m.email}</div>
+                        <div>{m.role}</div>
+                      </div>
+                      {m.role !== "owner" && (
+                        <button className="remove-btn" onClick={() => handleRemoveMember(m.email)}>
+                          Remove
+                        </button>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No members found.</p>
+              )}
+            </div>
+          </>
+        ) : (
+          <button className="leave-btn" onClick={handleLeaveTrip}>
+            Leave Trip
           </button>
-        </form>
-
-        <div className="members-list">
-          <h4>Members</h4>
-          {members.length > 0 ? (
-            <ul>
-              {members.map((m) => (
-                <li key={m.id} className="member-item">
-                  <div className="member-info">
-                    <div>{m.name}</div>
-                    <div>{m.email}</div>
-                    <div>{m.role}</div>
-                  </div>
-
-                  {m.role !== "owner" && (
-                    <button className="remove-btn" onClick={() => handleRemoveMember(m.email)}>
-                      Remove
-                    </button>
-                  )}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No members found.</p>
-          )}
-        </div>
+        )}
       </div>
     </div>
   )

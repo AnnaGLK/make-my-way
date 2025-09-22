@@ -117,6 +117,16 @@ export const removeFromTrip = async (tripId, email) => {
   return data
 }
 
+export const getSharedTrips = async () => {
+  const { data } = await API.get("/trip/shared", { withCredentials: true })
+  return data
+}
+
+export const leaveSharedTrip = async (tripId) => {
+  const { data } = await API.delete(`/trip/shared/${tripId}`, { withCredentials: true })
+  return data
+}
+
 // LOCATIONS
 export const getLocations = async () => {
   const { data } = await API.get("/locations") // LOCATIONS (for origin/destination dropdown) ---Need to expose this

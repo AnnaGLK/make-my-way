@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react"
 import TripInfo from "../components/TripInfo"
 // import { useTripStore } from "../stores/tripStore" // если используешь Zustand
-import { getUserTrips } from "../services/api.js"
+import { getUserTrips, getSharedTrips } from "../services/api.js"
 
 const TripResultPage = () => {
   const [trips, setTrips] = useState([])
+  const [ownTrips, setOwnTrips] = useState([])
+  const [sharedTrips, setSharedTrips] = useState([])
 
   useEffect(() => {
     const fetchTrips = async () => {
       try {
-        const data = await getUserTrips()
-        setTrips(data)
+        const ownT = await getUserTrips()
+        setOwnTrips(ownT)
+        const sharedT = await getSharedTrips()
+        setSharedTrips(sharedT)
       } catch (error) {
         console.error("Error fetching trips:", error)
       }
@@ -20,12 +24,21 @@ const TripResultPage = () => {
   }, [])
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">My Trips</h1>
-      {trips.length === 0 ? (
+    <div className="container">
+      <h1 className="page-title">My Trips</h1>
+      {ownTrips.length === 0 ? (
         <p>You have no saved trips yet.</p>
       ) : (
-        trips.map((trip) => <TripInfo key={trip.id} trip={trip} />)
+        ownTrips.map((trip) => <TripInfo key={trip.id} trip={trip} isOwner={true} />)
+      )}
+
+      <h1 className="page-title" style={{ marginTop: "2rem" }}>
+        Shared With Me
+      </h1>
+      {sharedTrips.length === 0 ? (
+        <p>No trips have been shared with you yet.</p>
+      ) : (
+        sharedTrips.map((trip) => <TripInfo key={trip.id} trip={trip} isOwner={false} />)
       )}
     </div>
   )
