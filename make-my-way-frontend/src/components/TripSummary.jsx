@@ -2,6 +2,7 @@
 import React from "react"
 import { useTripStore } from "../stores/tripStore"
 import "./TripSummary.css"
+import { getTripPath, saveTrip } from "../services/api.js"
 
 export default function TripSummary() {
   const tripState = useTripStore()
@@ -12,12 +13,14 @@ export default function TripSummary() {
     startDate,
     endDate,
     totalDays,
-    travelStyle,
     travelMode,
-    travelWith,
-    activities,
-    food,
+    originInfo,
+    destinationInfo,
+    itinerary,
     geminiPlan,
+    selectPlace,
+    setOverviewPolyline,
+    overviewPolyline,
   } = tripState
 
   const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
@@ -29,9 +32,76 @@ export default function TripSummary() {
     return `${hours}:${minutes}`
   }
 
+  const isSelected = (day, category, placeId) => {
+    const dayBlock = itinerary.find((d) => d.day === day)
+    if (!dayBlock) return false
+    const activity = dayBlock.activities.find((a) => a.category === category)
+    return activity?.place?.placeId === placeId
+  }
+
+  const getPolyline = async () => {
+    try {
+      const waypoints = itinerary
+        .map((day) =>
+          day.activities.map((act) => ({
+            latitude: act.place.coordinates.latitude,
+            longitude: act.place.coordinates.longitude,
+          }))
+        )
+        .flat()
+
+      const tripPathRequest = {
+        origin: {
+          latitude: originInfo.coordinates.latitude,
+          longitude: originInfo.coordinates.longitude,
+        },
+        destination: {
+          latitude: destinationInfo.coordinates.latitude,
+          longitude: destinationInfo.coordinates.longitude,
+        },
+        waypoints,
+      }
+
+      const polyline = await getTripPath(tripPathRequest)
+      setOverviewPolyline(polyline)
+    } catch (err) {
+      console.error("Get trip path error:", err)
+      alert("Failed to get trip path.")
+    }
+  }
+
+  const createTripMapForDB = async () => {
+    try {
+      const finalTrip = {
+        tripInfo: {
+          origin: origin,
+          destination: destination,
+          travelMode: travelMode,
+          startDate: startDate,
+          endDate: endDate,
+        },
+        originInfo,
+        destinationInfo,
+        itinerary,
+        tripPath: {
+          overviewPolyline,
+        },
+      }
+      await saveTrip(finalTrip)
+      alert("Trip saved successfully!")
+    } catch (err) {
+      console.error("Save trip error:", err)
+      alert("Failed to save trip.")
+    }
+  }
+
+  const handleSave = async () => {
+    await getPolyline()
+    await createTripMapForDB()
+  }
+
   return (
     <div className="trip-summary">
-      {/* Общая инфа */}
       <div className="trip-header">
         <h2>
           {origin} → {destination}
@@ -53,7 +123,12 @@ export default function TripSummary() {
 
                 <div className="options-row">
                   {cat.options.map((place) => (
-                    <div key={place.placeId} className="place-card">
+                    <div
+                      key={place.placeId}
+                      className={`place-card ${
+                        isSelected(day.day, cat.category, place.placeId) ? "selected" : ""
+                      }`}
+                    >
                       {place.photo && (
                         <img src={place.photo} alt={place.name} className="place-photo" />
                       )}
@@ -104,7 +179,12 @@ export default function TripSummary() {
 
                         <p className="rating">⭐ {place.rating || "N/A"}</p>
 
-                        <button className="select-btn">Choose</button>
+                        <button
+                          className="select-btn"
+                          onClick={() => selectPlace(day.day, cat.category, place)}
+                        >
+                          {isSelected(day.day, cat.category, place.placeId) ? "Unselect" : "Select"}
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -113,6 +193,12 @@ export default function TripSummary() {
             ))}
           </div>
         ))}
+      </div>
+
+      <div className="save-block">
+        <button className="save-btn" onClick={handleSave}>
+          💾 Save Trip
+        </button>
       </div>
     </div>
   )

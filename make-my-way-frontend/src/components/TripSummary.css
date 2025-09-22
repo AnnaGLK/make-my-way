@@ -44,12 +44,16 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   background: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  transition: box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .place-card:hover {
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border-color: #aaa;
+}
+
+.place-card.selected {
+  border: 2px solid #007bff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
 }
 
 .place-photo {
@@ -82,7 +86,6 @@
 }
 
 .select-btn {
-  align-self: flex-start;
   padding: 4px 8px;
   font-size: 12px;
   background: #007bff;
@@ -122,4 +125,24 @@
 
 .place-info a:hover {
   text-decoration: underline;
+}
+
+.save-block {
+  margin-top: 24px;
+  text-align: right;
+}
+
+.save-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  background: #28a745;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.save-btn:hover {
+  background: #218838;
 }

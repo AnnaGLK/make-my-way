@@ -66,6 +66,16 @@ export const planTrip = async (tripData) => {
   return data
 }
 
+export const getTripPath = async (tripPathRequest) => {
+  const { data } = await API.post("/trip/path", tripPathRequest)
+  return data.overviewPolyline
+}
+
+export const saveTrip = async (tripData) => {
+  const { data } = await API.post("/trip", tripData)
+  return data
+}
+
 export const getUserTrips = async () => {
   const { data } = await API.get("/trip")
   return data

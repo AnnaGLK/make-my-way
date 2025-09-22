@@ -21,6 +21,7 @@ export const useTripStore = create(
     originInfo: {},
     destinationInfo: {},
     geminiPlan: {},
+    itinerary: [],
 
     setOrigin: (origin) => set(() => ({ origin }), false, "setOrigin"),
     setDestination: (destination) => set(() => ({ destination }), false, "setDestination"),
@@ -74,6 +75,35 @@ export const useTripStore = create(
         },
         false,
         "countDays"
+      ),
+
+    selectPlace: (day, category, place) =>
+      set(
+        (state) => {
+          let updated = [...state.itinerary]
+
+          // ищем день
+          let dayBlock = updated.find((d) => d.day === day)
+          if (!dayBlock) {
+            dayBlock = { day, activities: [] }
+            updated.push(dayBlock)
+          }
+
+          // ищем активность по категории
+          let activity = dayBlock.activities.find((a) => a.category === category)
+          if (activity) {
+            activity.place = place
+          } else {
+            dayBlock.activities.push({
+              category,
+              place,
+            })
+          }
+
+          return { itinerary: updated }
+        },
+        false,
+        `selectPlace_day${day}_cat_${category}`
       ),
   }))
 )
