@@ -130,3 +130,44 @@
 .invite-btn:hover {
   background-color: #0d47a1;
 }
+
+.members-list {
+  margin-top: 20px;
+}
+
+.members-list h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.member-item {
+  display: flex;
+  justify-content: space-between; /* инфо слева, кнопка справа */
+  align-items: center;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  background: #fafafa;
+}
+
+.member-info {
+  display: flex;
+  flex-direction: column; /* имя / email / роль в столбик */
+  gap: 2px;
+}
+
+.remove-btn {
+  background-color: #f44336;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.remove-btn:hover {
+  background-color: #d32f2f;
+}

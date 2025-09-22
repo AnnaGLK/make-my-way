@@ -103,6 +103,20 @@ export const inviteToTrip = async (tripId, email) => {
   return data
 }
 
+export const getTripMembers = async (tripId) => {
+  const { data } = await API.get(`/trip/${tripId}/members`, { withCredentials: true })
+  return data
+}
+
+export const removeFromTrip = async (tripId, email) => {
+  const body = { invitedUserEmail: email }
+  const { data } = await API.delete(`/trip/${tripId}/share`, {
+    data: body,
+    withCredentials: true,
+  })
+  return data
+}
+
 // LOCATIONS
 export const getLocations = async () => {
   const { data } = await API.get("/locations") // LOCATIONS (for origin/destination dropdown) ---Need to expose this

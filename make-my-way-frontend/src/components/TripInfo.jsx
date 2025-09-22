@@ -1,6 +1,6 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import "./TripInfo.css"
-import { deleteTrip, inviteToTrip } from "../services/api.js"
+import { deleteTrip, inviteToTrip, getTripMembers, removeFromTrip } from "../services/api.js"
 
 const formatDate = (dateString) => {
   if (!dateString) return ""
@@ -9,10 +9,26 @@ const formatDate = (dateString) => {
 
 const TripInfo = ({ trip }) => {
   const [inviteEmail, setInviteEmail] = useState("")
+  const [members, setMembers] = useState([])
+
+  const tripId = trip?.id || trip?._id
+
+  useEffect(() => {
+    if (!tripId) return
+    const fetchMembers = async () => {
+      try {
+        const data = await getTripMembers(tripId)
+        setMembers(data)
+      } catch (error) {
+        console.error("Error fetching members:", error)
+      }
+    }
+    fetchMembers()
+  }, [tripId])
 
   if (!trip) return null
 
-  const { id: tripId, tripInfo, originInfo, destinationInfo, itinerary } = trip
+  const { tripInfo, originInfo, destinationInfo, itinerary } = trip
 
   const handleDelete = async () => {
     try {
@@ -24,18 +40,33 @@ const TripInfo = ({ trip }) => {
   }
 
   const handleInvite = async (e) => {
+    e.preventDefault()
+    if (!inviteEmail) {
+      alert("Please enter an email address.")
+      return
+    }
     try {
-      e.preventDefault()
-      if (!inviteEmail) {
-        alert("Please enter an email address.")
-        return
-      }
       await inviteToTrip(tripId, inviteEmail)
       alert("Invitation sent successfully!")
       setInviteEmail("")
+      const data = await getTripMembers(tripId)
+      setMembers(data)
     } catch (error) {
       console.error("Error sending invite:", error)
       const message = error.response?.data?.error || "Failed to send invite."
+      alert(message)
+    }
+  }
+
+  const handleRemoveMember = async (email) => {
+    if (!window.confirm(`Remove ${email} from trip?`)) return
+    try {
+      await removeFromTrip(tripId, email)
+      alert("User removed from trip")
+      setMembers((prev) => prev.filter((m) => m.email !== email))
+    } catch (error) {
+      console.error("Error removing member:", error)
+      const message = error.response?.data?.error || "Failed to remove user."
       alert(message)
     }
   }
@@ -108,6 +139,31 @@ const TripInfo = ({ trip }) => {
             Invite
           </button>
         </form>
+
+        <div className="members-list">
+          <h4>Members</h4>
+          {members.length > 0 ? (
+            <ul>
+              {members.map((m) => (
+                <li key={m.id} className="member-item">
+                  <div className="member-info">
+                    <div>{m.name}</div>
+                    <div>{m.email}</div>
+                    <div>{m.role}</div>
+                  </div>
+
+                  {m.role !== "owner" && (
+                    <button className="remove-btn" onClick={() => handleRemoveMember(m.email)}>
+                      Remove
+                    </button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No members found.</p>
+          )}
+        </div>
       </div>
     </div>
   )
