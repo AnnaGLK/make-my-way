@@ -94,6 +94,15 @@ export const deleteTrip = async (id) => {
   return data
 }
 
+export const inviteToTrip = async (tripId, email) => {
+  const body = {
+    invitedUserEmail: email,
+  }
+
+  const { data } = await API.post(`/trip/${tripId}/share`, body, { withCredentials: true })
+  return data
+}
+
 // LOCATIONS
 export const getLocations = async () => {
   const { data } = await API.get("/locations") // LOCATIONS (for origin/destination dropdown) ---Need to expose this

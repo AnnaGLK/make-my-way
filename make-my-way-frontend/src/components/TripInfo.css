@@ -1,10 +1,19 @@
 .trip-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 24px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  gap: 20px;
+}
+
+/* Left column */
+.trip-info {
+  flex: 2;
 }
 
 .trip-title {
@@ -72,4 +81,52 @@
 .empty-itinerary {
   color: #888;
   font-style: italic;
+}
+
+/* Right column */
+.trip-actions {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.delete-btn {
+  background-color: #e53935;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.delete-btn:hover {
+  background-color: #c62828;
+}
+
+.invite-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.invite-form input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.invite-btn {
+  background-color: #1976d2;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.invite-btn:hover {
+  background-color: #0d47a1;
 }
