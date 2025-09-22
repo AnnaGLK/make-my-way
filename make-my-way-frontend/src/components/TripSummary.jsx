@@ -3,9 +3,11 @@ import React from "react"
 import { useTripStore } from "../stores/tripStore"
 import "./TripSummary.css"
 import { getTripPath, saveTrip } from "../services/api.js"
+import { useNavigate } from "react-router-dom"
 
 export default function TripSummary() {
   const tripState = useTripStore()
+  const navigate = useNavigate()
 
   const {
     origin,
@@ -64,13 +66,15 @@ export default function TripSummary() {
 
       const polyline = await getTripPath(tripPathRequest)
       setOverviewPolyline(polyline)
+
+      return polyline
     } catch (err) {
       console.error("Get trip path error:", err)
       alert("Failed to get trip path.")
     }
   }
 
-  const createTripMapForDB = async () => {
+  const createTripMapForDB = async (polyline) => {
     try {
       const finalTrip = {
         tripInfo: {
@@ -84,11 +88,15 @@ export default function TripSummary() {
         destinationInfo,
         itinerary,
         tripPath: {
-          overviewPolyline,
+          overviewPolyline: polyline,
         },
       }
+
+      console.log("Final trip to save:", finalTrip)
+
       await saveTrip(finalTrip)
       alert("Trip saved successfully!")
+      navigate("/results")
     } catch (err) {
       console.error("Save trip error:", err)
       alert("Failed to save trip.")
@@ -96,8 +104,8 @@ export default function TripSummary() {
   }
 
   const handleSave = async () => {
-    await getPolyline()
-    await createTripMapForDB()
+    const polyline = await getPolyline()
+    await createTripMapForDB(polyline)
   }
 
   return (
@@ -163,7 +171,7 @@ export default function TripSummary() {
                           <p>
                             🌐{" "}
                             <a href={place.website} target="_blank" rel="noreferrer">
-                              {place.website}
+                              Website
                             </a>
                           </p>
                         )}

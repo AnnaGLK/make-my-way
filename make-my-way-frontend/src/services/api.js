@@ -1,12 +1,13 @@
 import axios from "axios"
-import { act } from "react"
 
-const API = axios.create({
+export const API = axios.create({
   //baseURL: "https://map-my-way-backend.onrender.com",
-  baseURL: "http://localhost:4000",
+  //baseURL: "http://localhost:4000",
+  baseURL: "https://map-my-way-backend-zinger.onrender.com",
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 })
 
 // --- AUTH ---
@@ -62,32 +63,34 @@ export const planTrip = async (tripData) => {
     },
   }
 
-  const { data } = await API.post("/trip/plan", requestData)
+  const { data } = await API.post("/trip/plan", requestData, { withCredentials: true })
+  console.log(">>> planTrip response data:", data)
+
   return data
 }
 
 export const getTripPath = async (tripPathRequest) => {
-  const { data } = await API.post("/trip/path", tripPathRequest)
-  return data.overviewPolyline
+  const { data } = await API.post("/trip/path", tripPathRequest, { withCredentials: true })
+  return data.tripPath.overviewPolyline
 }
 
 export const saveTrip = async (tripData) => {
-  const { data } = await API.post("/trip", tripData)
+  const { data } = await API.post("/trip", tripData, { withCredentials: true })
   return data
 }
 
 export const getUserTrips = async () => {
-  const { data } = await API.get("/trip")
+  const { data } = await API.get("/trip/my", { withCredentials: true })
   return data
 }
 
 export const getTripById = async (id) => {
-  const { data } = await API.get(`/trip/${id}`)
+  const { data } = await API.get(`/trip/${id}`, { withCredentials: true })
   return data
 }
 
 export const deleteTrip = async (id) => {
-  const { data } = await API.delete(`/trip/${id}`)
+  const { data } = await API.delete(`/trip/${id}`, { withCredentials: true })
   return data
 }
 
