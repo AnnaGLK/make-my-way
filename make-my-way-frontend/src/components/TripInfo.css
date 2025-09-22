@@ -185,3 +185,18 @@
 .leave-btn:hover {
   background-color: #e68900;
 }
+
+.pdf-btn {
+  display: inline-block;
+  margin: 10px 0;
+  padding: 6px 12px;
+  background-color: #4caf50;
+  color: white;
+  font-weight: 600;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.pdf-btn:hover {
+  background-color: #388e3c;
+}

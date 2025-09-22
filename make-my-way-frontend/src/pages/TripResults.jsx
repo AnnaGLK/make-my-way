@@ -12,6 +12,7 @@ const TripResultPage = () => {
     const fetchTrips = async () => {
       try {
         const ownT = await getUserTrips()
+
         setOwnTrips(ownT)
         const sharedT = await getSharedTrips()
         setSharedTrips(sharedT)

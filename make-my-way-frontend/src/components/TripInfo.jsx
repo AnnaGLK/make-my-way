@@ -34,7 +34,7 @@ const TripInfo = ({ trip, isOwner }) => {
 
   if (!trip) return null
 
-  const { tripInfo, originInfo, destinationInfo, itinerary } = trip
+  const { tripInfo, originInfo, destinationInfo, itinerary, pdfUrl } = trip
 
   const handleDelete = async () => {
     try {
@@ -82,7 +82,6 @@ const TripInfo = ({ trip, isOwner }) => {
     try {
       await leaveSharedTrip(tripId)
       alert("You left the trip.")
-      // тут можно обновить список в TripResultPage через пропс/refresh
     } catch (error) {
       console.error("Error leaving trip:", error)
       const message = error.response?.data?.error || "Failed to leave trip."
@@ -106,6 +105,12 @@ const TripInfo = ({ trip, isOwner }) => {
             <span className="label">Dates:</span> {formatDate(tripInfo.startDate)} —{" "}
             {formatDate(tripInfo.endDate)}
           </p>
+        )}
+
+        {pdfUrl && (
+          <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="pdf-btn">
+            Download PDF
+          </a>
         )}
 
         <h3 className="itinerary-heading">Itinerary</h3>
