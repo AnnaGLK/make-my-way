@@ -18,26 +18,14 @@ export const useTripStore = create(
     overviewPolyline: "",
     totalDays: 0,
 
+    originInfo: {},
+    destinationInfo: {},
+    geminiPlan: {},
+
     setOrigin: (origin) => set(() => ({ origin }), false, "setOrigin"),
     setDestination: (destination) => set(() => ({ destination }), false, "setDestination"),
     setStartDay: (startDay) => set(() => ({ startDay }), false, "setStartDay"),
     setEndDay: (endDay) => set(() => ({ endDay }), false, "setEndDay"),
-
-    countDays: () =>
-      set(
-        (state) => {
-          if (state.startDay && state.endDay) {
-            const start = new Date(state.startDay)
-            const end = new Date(state.endDay)
-            const diffTime = Math.abs(end - start)
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1
-            return { totalDays: diffDays }
-          }
-          return { totalDays: 0 }
-        },
-        false,
-        "countDays"
-      ),
 
     addWaypoint: (waypoint) =>
       set(

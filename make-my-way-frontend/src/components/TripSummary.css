@@ -1,0 +1,125 @@
+/* ===== CSS ===== */
+.trip-summary {
+  padding: 24px;
+  font-family: Arial, sans-serif;
+}
+
+.trip-header h2 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.trip-header p {
+  margin: 4px 0;
+  color: #555;
+}
+
+.day-block {
+  margin-bottom: 32px;
+}
+
+.day-block h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.category-block h4 {
+  font-size: 16px;
+  margin-bottom: 8px;
+  text-transform: capitalize;
+}
+
+.options-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.place-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 280px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s ease;
+}
+
+.place-card:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.place-photo {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.place-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.place-info h5 {
+  font-size: 14px;
+  margin: 0 0 4px;
+}
+
+.place-info .address {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.place-info .rating {
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.select-btn {
+  align-self: flex-start;
+  padding: 4px 8px;
+  font-size: 12px;
+  background: #007bff;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.select-btn:hover {
+  background: #0056b3;
+}
+
+.place-info .summary {
+  font-size: 12px;
+  color: #555;
+  margin: 4px 0;
+}
+
+.opening-hours {
+  font-size: 12px;
+  color: #444;
+  margin-bottom: 4px;
+}
+
+.phone {
+  font-size: 12px;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.place-info a {
+  font-size: 12px;
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.place-info a:hover {
+  text-decoration: underline;
+}

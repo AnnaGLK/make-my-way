@@ -5,6 +5,7 @@ import { planTrip } from "../services/api"
 import { searchCities } from "../services/geoDB"
 import DebouncedInput from "./DebouncedInput"
 import { useTripStore } from "../stores/tripStore"
+import { useNavigate } from "react-router-dom"
 
 const TRAVEL_STYLES = ["Urban Explorer", "Culture & History", "Chill & Relax", "Adventure Mode"]
 const TRAVEL_MODES = ["driving", "bike", "walk"]
@@ -27,6 +28,7 @@ export default function TripForm() {
   const [step, setStep] = useState(1)
   const [originSuggestions, setOriginSuggestions] = useState([])
   const [destinationSuggestions, setDestinationSuggestions] = useState([])
+  const navigate = useNavigate()
 
   const {
     origin,
@@ -60,13 +62,15 @@ export default function TripForm() {
       activities,
       food,
     }
-    console.log(">>> handleSubmit CALLED", tripData)
 
     try {
-      if (typeof planTrip === "function") {
-        await planTrip(tripData)
-      }
-      alert("Trip planned successfully!")
+      const tripInfo = await planTrip(tripData)
+
+      setField("originInfo", tripInfo.originInfo)
+      setField("destinationInfo", tripInfo.destinationInfo)
+      setField("geminiPlan", tripInfo.geminiPlan)
+
+      navigate("/summary")
     } catch (err) {
       console.error("Plan trip error:", err)
       alert("Failed to plan trip.")
