@@ -5,6 +5,7 @@ import {
   logout as logoutApi,
   refresh as refreshApi,
 } from "../services/api"
+import { API } from "../services/api"
 
 const AuthContext = createContext(null)
 
@@ -20,7 +21,12 @@ export function AuthProvider({ children }) {
       if (refreshToken) {
         try {
           const data = await refreshApi(refreshToken)
-          setActiveUser(data.user)
+          if (data.token) {
+            localStorage.setItem("token", data.token)
+            API.defaults.headers.common["Authorization"] = `Bearer ${data.token}`
+
+            setActiveUser(data.user)
+          }
         } catch (err) {
           console.error("Refresh failed", err)
           await handleLogout()
@@ -29,15 +35,19 @@ export function AuthProvider({ children }) {
       setLoading(false)
     }
     tryRefresh()
-    // eslint-disable-next-line
   }, [])
 
   const handleLogin = async (email, password) => {
     try {
       const data = await loginApi({ email, password })
 
-      setActiveUser(data.user)
-      return data.user
+      if (data.token) {
+        localStorage.setItem("token", data.token)
+        API.defaults.headers.common["Authorization"] = `Bearer ${data.token}`
+
+        setActiveUser(data.user)
+        return data.user
+      }
     } catch (err) {
       console.error(err)
       throw err
@@ -47,7 +57,12 @@ export function AuthProvider({ children }) {
   const handleRegister = async (username, email, password) => {
     try {
       const data = await registerApi({ username, email, password })
-      return data
+      if (data.token) {
+        localStorage.setItem("token", data.token)
+        API.defaults.headers.common["Authorization"] = `Bearer ${data.token}`
+
+        return data
+      }
     } catch (err) {
       console.error(err)
       throw err
@@ -57,6 +72,8 @@ export function AuthProvider({ children }) {
   const handleLogout = async () => {
     try {
       if (token) await logoutApi(token)
+      localStorage.removeItem("token")
+      delete API.defaults.headers.common["Authorization"]
     } catch (err) {
       console.error("Logout error", err)
     } finally {
