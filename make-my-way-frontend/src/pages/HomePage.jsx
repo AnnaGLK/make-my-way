@@ -23,7 +23,7 @@ export default function HomePage() {
 
       {/* --- Hero Section --- */}
       <section
-        className="relative flex items-center justify-center text-center"
+        className="relative flex min-vh-100 items-center justify-center text-center"
       >
         <div className="hero main-hero">
           <img src={process.env.PUBLIC_URL + '/media/hero1.jpg'} alt="hero"/>

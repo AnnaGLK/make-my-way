@@ -1,15 +1,15 @@
-// src/components/TripForm.jsx
-import React, {useCallback, useState} from "react";
-import "./TripForm.css";
-import {planTrip} from "../services/api"; // keep if you have this service
-import {searchCities} from "../services/geoDB";
-import DebouncedInput from "./DebouncedInput"; // keep if you have this service
+import React, { useCallback, useEffect, useState } from "react";
+import "../styles/TripForm.css";
+import { planTrip } from "../services/api";
+import { searchCities } from "../services/geoDB";
+import DebouncedInput from "./DebouncedInput";
 
 const TRAVEL_STYLES = ["Urban Explorer", "Culture & History", "Chill & Relax", "Adventure Mode"];
 const TRAVEL_MODES = ["driving", "bike", "walk"];
 const TRAVEL_WITH = ["Adults only", "Family"];
 const ACTIVITIES = ["museum", "sightseeing", "shopping", "beach", "hiking", "nightlife", "art", "nature", "spa", "theater"];
 const FOOD_PREFS = ["restaurant", "dining", "fast_food", "street_food", "cafe", "local"];
+const STORAGE_KEY = "tripFormData";
 
 export default function TripForm() {
     const [step, setStep] = useState(1);
@@ -27,11 +27,11 @@ export default function TripForm() {
     });
 
     const handleChange = useCallback((field, value) => {
-        setFormData((prev) => ({...prev, [field]: value}));
+        setFormData((prev) => ({ ...prev, [field]: value }));
     }, []);
 
     const handleDateChange = (field, value) => {
-        const updated = {...formData, [field]: value};
+        const updated = { ...formData, [field]: value };
         if (updated.startDate && updated.endDate) {
             const start = new Date(updated.startDate);
             const end = new Date(updated.endDate);
@@ -44,9 +44,15 @@ export default function TripForm() {
     const toggleArrayValue = (field, value, limit) => {
         setFormData((prev) => {
             let arr = Array.isArray(prev[field]) ? [...prev[field]] : [];
-            if (arr.includes(value)) arr = arr.filter((v) => v !== value);
-            else if (arr.length < limit) arr.push(value);
-            return {...prev, [field]: arr};
+            if (arr.includes(value)) {
+                arr = arr.filter((v) => v !== value);
+            } else {
+                if (limit && arr.length >= limit) {
+                    return prev;
+                }
+                arr.push(value);
+            }
+            return { ...prev, [field]: arr };
         });
     };
 
@@ -98,6 +104,31 @@ export default function TripForm() {
         [handleChange]
     );
 
+    useEffect(() => {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            try {
+                const { data, step: savedStep, timestamp } = JSON.parse(saved);
+                const now = Date.now();
+                if (now - timestamp < 24 * 60 * 60 * 1000) {
+                    setFormData(data);
+                    setStep(savedStep || 1);
+                } else {
+                    localStorage.removeItem(STORAGE_KEY);
+                }
+            } catch (err) {
+                console.error("Error parsing saved trip form data", err);
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify({ data: formData, step, timestamp: Date.now() })
+        );
+    }, [formData, step]);
+
     return (
         <div className="tripform-wrapper">
 
@@ -106,10 +137,10 @@ export default function TripForm() {
                 {/* Step 1: Origin & Destination */}
                 {step === 1 && (
                     <div className="tripform-step">
-                        <div className="tripform-header">
-                            <h2 className="tripform-title">Start your journey</h2>
+                        <div className="tripform-header first d-flex">
+                            <h2 className="tripform-title">Where are you heading?</h2>
                         </div>
-                        <div className="tripform-body p-4">
+                        <div className="tripform-body p-3">
                             <p className="tripform-sub text-center">Please tell us your destinations</p>
                             <label className="form-label">Origin</label>
                             <DebouncedInput
@@ -168,10 +199,10 @@ export default function TripForm() {
                 {step === 2 && (
 
                     <div className="tripform-step">
-                        <div className="tripform-header">
-                            <h2 className="tripform-title">Start your journey</h2>
+                        <div className="tripform-header d-flex">
+                            <h2 className="tripform-title">When will you travel?</h2>
                         </div>
-                        <div>
+                        <div className="tripform-body p-3">
                             <p className="tripform-sub text-center">Please tell us your dates</p>
                             <label className="form-label">Start Date</label>
                             <input
@@ -201,10 +232,10 @@ export default function TripForm() {
                 {/* Step 3: Travel Style */}
                 {step === 3 && (
                     <div className="tripform-step">
-                        <div className="tripform-header">
-                            <h2 className="tripform-title">Start your journey</h2>
+                        <div className="tripform-header d-flex">
+                            <h2 className="tripform-title">What’s your vibe?</h2>
                         </div>
-                        <div>
+                        <div className="tripform-body p-3">
                             <p className="tripform-sub text-center">Please tell us your Travel Style</p>
                             <div className="options-grid">
                                 {TRAVEL_STYLES.map((style) => (
@@ -213,7 +244,8 @@ export default function TripForm() {
                                         type="button"
                                         className={`option-btn ${formData.travelStyle === style ? "active" : ""}`}
                                         onClick={() => handleChange("travelStyle", style)}
-                                        style={{backgroundImage: `url(/images/${style.toLowerCase()}.jpg)`}}
+                                        // style={{backgroundImage: `url(../images/${style.toLowerCase()}.jpg)`}}
+                                        style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/${style.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}.jpg)` }}
                                     >
                                         <span className="option-label">{style}</span>
                                     </button>
@@ -226,22 +258,29 @@ export default function TripForm() {
                 {/* Step 4: Travel Mode */}
                 {step === 4 && (
                     <div className="tripform-step">
-                        <div className="tripform-header">
-                            <h2 className="tripform-title">Start your journey</h2>
+                        <div className="tripform-header d-flex">
+                            <h2 className="tripform-title">How will you get around?</h2>
                         </div>
-                        <div>
+                        <div className="tripform-body p-3">
                             <p className="tripform-sub text-center">Please tell us your Travel Mode</p>
                             <div className="options-grid">
-                                {TRAVEL_MODES.map((mode) => (
-                                    <button
+                                {TRAVEL_MODES.map((mode) => {
+                                    const icons = {
+                                        driving: "bi bi-car-front",
+                                        bike: "bi bi-bicycle",
+                                        walk: "bi bi-person-walking"
+                                    };
+                                    return (<button
                                         key={mode}
                                         type="button"
-                                        className={`option-btn ${formData.travelMode === mode ? "active" : ""}`}
+                                        className={`travelMode-btn option-btn ${formData.travelMode === mode ? "active" : ""}`}
                                         onClick={() => handleChange("travelMode", mode)}
                                     >
-                                        {mode}
+                                        <i className={`${icons[mode]} me-2`}></i>
+                                        {mode.charAt(0).toUpperCase() + mode.slice(1)}
                                     </button>
-                                ))}
+                                    );
+                                })}
                             </div>
                         </div>
                     </div>
@@ -250,22 +289,29 @@ export default function TripForm() {
                 {/* Step 5: Travel With */}
                 {step === 5 && (
                     <div className="tripform-step">
-                        <div className="tripform-header">
-                            <h2 className="tripform-title">Start your journey</h2>
+                        <div className="tripform-header d-flex">
+                            <h2 className="tripform-title">Who’s coming along?</h2>
                         </div>
-                        <div>
+                        <div className="tripform-body p-3">
                             <p className="tripform-sub text-center">Who are you travelling with?</p>
                             <div className="options-grid">
-                                {TRAVEL_WITH.map((w) => (
-                                    <button
-                                        key={w}
-                                        type="button"
-                                        className={`option-btn ${formData.travelWith === w ? "active" : ""}`}
-                                        onClick={() => handleChange("travelWith", w)}
-                                    >
-                                        {w}
-                                    </button>
-                                ))}
+                                {TRAVEL_WITH.map((w) => {
+                                    const icons = {
+                                        "Adults only": <i className="bi bi-people me-2"></i>,
+                                        Family: <span className="family-icon me-2"></span>,
+                                    };
+                                    return (
+                                        <button
+                                            key={w}
+                                            type="button"
+                                            className={`travelMode-btn option-btn ${formData.travelWith === w ? "active" : ""}`}
+                                            onClick={() => handleChange("travelWith", w)}
+                                        >
+                                            {icons[w]}
+                                            {w}
+                                        </button>
+                                    );
+                                })}
                             </div>
                         </div>
                     </div>
@@ -274,50 +320,75 @@ export default function TripForm() {
                 {/* Step 6: Activities & Food */}
                 {step === 6 && (
                     <div className="tripform-step">
-                        <div className="tripform-header">
-                            <h2 className="tripform-title">Start your journey</h2>
+                        <div className="tripform-header d-flex">
+                            <h2 className="tripform-title">Choose your favorites</h2>
                         </div>
-                        <div>
+                        <div className="tripform-body p-3">
                             <p className="tripform-sub text-center">Choose your preferences</p>
+
+                            {/* Activities */}
                             <label className="form-label">Pick up to 4 activities</label>
                             <div className="options-grid">
-                                {ACTIVITIES.map((a) => (
-                                    <button
-                                        key={a}
-                                        type="button"
-                                        className={`act-btn ${formData.activities.includes(a) ? "active" : ""}`}
-                                        onClick={() => toggleArrayValue("activities", a, 4)}
-                                    >
-                                        {a}
-                                    </button>
-                                ))}
+                                {ACTIVITIES.map((a) => {
+                                    const isActive = formData.activities.includes(a);
+                                    const isDisabled =
+                                        !isActive && formData.activities.length >= 4;
+                                    return (
+                                        <button
+                                            key={a}
+                                            type="button"
+                                            className={`act-btn ${isActive ? "active" : ""}`}
+                                            disabled={isDisabled}
+                                            onClick={() => toggleArrayValue("activities", a, 4)}
+                                        >
+                                            {a}
+                                        </button>
+                                    );
+                                })}
                             </div>
+                            {/* {formData.activities.length >= 4 && (
+                                <p className="text-danger small mt-1">
+                                    You can only pick up to 4 activities.
+                                </p>
+                            )} */}
 
+                            {/* Food */}
                             <label className="form-label mt-3">Pick up to 2 food preferences</label>
                             <div className="options-grid">
-                                {FOOD_PREFS.map((f) => (
-                                    <button
-                                        key={f}
-                                        type="button"
-                                        className={`act-btn ${formData.food.includes(f) ? "active" : ""}`}
-                                        onClick={() => toggleArrayValue("food", f, 2)}
-                                    >
-                                        {f}
-                                    </button>
-                                ))}
+                                {FOOD_PREFS.map((f) => {
+                                    const isActive = formData.food.includes(f);
+                                    const isDisabled =
+                                        !isActive && formData.food.length >= 2; 
+                                    return (
+                                        <button
+                                            key={f}
+                                            type="button"
+                                            className={`act-btn ${isActive ? "active" : ""}`}
+                                            disabled={isDisabled}
+                                            onClick={() => toggleArrayValue("food", f, 2)}
+                                        >
+                                            {f}
+                                        </button>
+                                    );
+                                })}
                             </div>
+                            {/* {formData.food.length >= 2 && (
+                                <p className="text-danger small mt-1">
+                                    You can only pick up to 2 food preferences.
+                                </p>
+                            )} */}
                         </div>
                     </div>
                 )}
 
                 {/* Navigation Buttons */}
-                <div className="tripform-actions d-flex">
+                <div className={`tripform-actions d-flex px-3 ${step === 1 ? "gap-0" : ""}`}>
                     {step > 1 ? (
                         <button type="button" className="btn btn-secondary trip-btn" onClick={prevStep}>
                             Prev
                         </button>
                     ) : (
-                        <div/>
+                        <div />
                     )}
 
                     {step < 6 ? (

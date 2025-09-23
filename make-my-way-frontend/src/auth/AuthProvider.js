@@ -17,6 +17,22 @@ export function AuthProvider({ children }) {
   );
   const [loading, setLoading] = useState(true);
 
+  const handleLogout = async () => {
+    try {
+      if (token) await logoutApi(token);
+      localStorage.removeItem("token");
+        delete API.defaults.headers.common["Authorization"];
+    } catch (err) {
+      console.error("Logout error", err);
+    } finally {
+      setActiveUser(null);
+      setToken(null);
+      setRefreshToken(null);
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+    }
+  };
+  
   useEffect(() => {
     // try refreshing token on mount
     const tryRefresh = async () => {
@@ -39,7 +55,7 @@ export function AuthProvider({ children }) {
       setLoading(false);
     };
     tryRefresh();
-  }, []);
+  }, [refreshToken, handleLogout]);
 
   const handleLogin = async (email, password) => {
     try {
@@ -73,21 +89,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      if (token) await logoutApi(token);
-      localStorage.removeItem("token");
-        delete API.defaults.headers.common["Authorization"];
-    } catch (err) {
-      console.error("Logout error", err);
-    } finally {
-      setActiveUser(null);
-      setToken(null);
-      setRefreshToken(null);
-      localStorage.removeItem("token");
-      localStorage.removeItem("refreshToken");
-    }
-  };
+  
 
   return (
     <AuthContext.Provider
