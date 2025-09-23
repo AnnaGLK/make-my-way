@@ -1,14 +1,16 @@
 // src/components/Navbar.jsx
 import React from 'react';
 import {NavLink} from 'react-router-dom';
+import Logo from "../assets/logo.png";
+import "../styles/Navbar.css";
 
 export default function Navbar() {
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top shadow-sm">
+        <nav className="navbar navbar-expand-lg sticky-top shadow-sm">
             <div className="container-fluid">
                 <NavLink to="/" className="navbar-brand d-flex align-items-center">
                 {/* <img src={process.env.PUBLIC_URL + '/media/logo.png'} alt="MakeMyWay" width="auto" height="36" className="me-2"/> */}
-                <img src="../media/logo.png" alt="MakeMyWay" width="auto" height="36" className="me-2"/>
+                <img src={Logo} alt="MakeMyWay" width="auto" height="36" className="me-2"/>
                 </NavLink>
 
                 <button

@@ -1,0 +1,9 @@
+.main-hero>img{
+    object-fit: cover;
+    object-position: center;
+    height: 40vh;
+    width: 100%;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    padding-bottom: 1rem;
+}
