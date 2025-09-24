@@ -1,0 +1,41 @@
+/* Wrapper card */
+.loginform-wrapper {
+  max-width: 680px;
+  /* margin: auto;
+  font-family: "Jost", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial; */
+  color: var(--text);
+  padding: 0;
+}
+/* Header */
+.loginform-header {
+  text-align: center;
+  height: 40vh;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  width: 100%;
+  background-image: url("../../public/media/hero3.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginform-header h2 {
+  color: #fff;
+}
+
+.loginform-title {
+  font-size: 1.9rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+
+.loginform-sub {
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+a {
+    color: var(--brand);
+}

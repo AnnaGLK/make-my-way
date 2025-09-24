@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../services/api";
 import { useAuth } from "../auth/AuthProvider";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "../styles/LoginPage.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 
 export function RegisterPage() {
     const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -46,11 +47,14 @@ export function RegisterPage() {
 
     return (
         <div
-            className="container d-flex align-items-center justify-content-center"
-            style={{ minHeight: "100vh" }}
+            className="container d-flex align-items-center justify-content-center loginform-wrapper"
+            // style={{ minHeight: "100vh" }}
         >
             <div className="w-100" style={{ maxWidth: "420px" }}>
+                <div className="loginform-header d-flex">
                 <h2 className="text-center mb-3">Create an Account</h2>
+                </div>
+                <div className="p-3">
                 <p className="text-center text-muted">
                     Already have an account?{" "}
                     <Link to="/login" className="text-decoration-none">
@@ -58,7 +62,7 @@ export function RegisterPage() {
                     </Link>
                 </p>
 
-                <div className="card shadow-sm p-4">
+                <div>
                     {registerError && (
                         <div className="alert alert-danger">{registerError}</div>
                     )}
@@ -112,7 +116,7 @@ export function RegisterPage() {
 
                         <button
                             type="submit"
-                            className="btn btn-success w-100"
+                            className="btn btn-primary w-100"
                             disabled={loading}
                         >
                             {loading ? (
@@ -125,6 +129,7 @@ export function RegisterPage() {
                             )}
                         </button>
                     </form>
+                </div>
                 </div>
             </div>
         </div>
