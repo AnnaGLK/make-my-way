@@ -2,7 +2,8 @@
 
 :root{
   --brand: #00C16D;
-  --brand-dark: #00A95D;
+  --brand-dark: #343633;
+  --brand-light: #D6D6D6;
   --text: #343633;
   --muted: #7a7a7a;
   --card-bg: #ffffff;
@@ -17,5 +18,11 @@ body {
   padding: 0;
   background-color: #f9f9f9;
   color: var(--text);
+  /* color: var(--brand); */
 }
-
+.btn-primary {
+    background-color: var(--brand) !important;
+    border-color: var(--brand) !important;
+    color: #fff !important;
+    box-shadow: 0 8px 22px rgba(0, 193, 109, 0.12);
+}
