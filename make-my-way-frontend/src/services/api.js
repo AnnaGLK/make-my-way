@@ -1,69 +1,134 @@
-import axios from "axios";
+import axios from "axios"
 
 export const API = axios.create({
-  baseURL: "https://map-my-way-backend.onrender.com", 
+  //baseURL: "https://map-my-way-backend.onrender.com",
+  //baseURL: "http://localhost:4000",
+  baseURL: "https://map-my-way-backend-zinger.onrender.com",
   headers: {
     "Content-Type": "application/json",
   },
-   withCredentials: true,
-});
+  withCredentials: true,
+})
 
 // --- AUTH ---
 export const register = async (userData) => {
-  const { data } = await API.post("/auth/register", userData);
-  return data;
-};
+  console.log(">>> register CALLED", userData)
+
+  const { data } = await API.post("/auth/register", userData)
+  return data
+}
 
 export const login = async (credentials) => {
-  const { data } = await API.post("/auth/login", credentials);
+  const { data } = await API.post("/auth/login", credentials)
 
   if (data.token) {
     // localStorage.setItem("token", data.token);
-    API.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+    API.defaults.headers.common["Authorization"] = `Bearer ${data.token}`
   }
-  return data;
-};
+  return data
+}
 
 export const logout = async () => {
-    const { data } = await API.post("/auth/logout");
-    localStorage.removeItem("token");
-    delete API.defaults.headers.common["Authorization"];
-    return data;
-};
+  const { data } = await API.post("/auth/logout")
+  localStorage.removeItem("token")
+  delete API.defaults.headers.common["Authorization"]
+  return data
+}
 
 export const refresh = async () => {
-    const { data } = await API.post("/auth/refresh");
-    if (data.token) {
-        localStorage.setItem("token", data.token);
-        API.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
-    }
-    return data;
-};
+  const { data } = await API.post("/auth/refresh")
+  if (data.token) {
+    localStorage.setItem("token", data.token)
+    API.defaults.headers.common["Authorization"] = `Bearer ${data.token}`
+  }
+  return data
+}
 
 // --- TRIP PLANNING ---
 export const planTrip = async (tripData) => {
-  const { data } = await API.post("/trip/plan", tripData);
-  return data;
-};
+  const radiusMap = {
+    driving: 3000,
+    bike: 1000,
+    walk: 500,
+  }
+  const requestData = {
+    origin: tripData.origin.split(",")[0],
+    destination: tripData.destination.split(",")[0],
+    mode: tripData.travelMode,
+    days: tripData.days,
+    radius: radiusMap[tripData.travelMode] || 3000,
+    preferences: {
+      activities: tripData.activities,
+      food: tripData.food,
+    },
+  }
+
+  const { data } = await API.post("/trip/plan", requestData, { withCredentials: true })
+  console.log(">>> planTrip response data:", data)
+
+  return data
+}
+
+export const getTripPath = async (tripPathRequest) => {
+  const { data } = await API.post("/trip/path", tripPathRequest, { withCredentials: true })
+  return data.tripPath.overviewPolyline
+}
+
+export const saveTrip = async (tripData) => {
+  const { data } = await API.post("/trip", tripData, { withCredentials: true })
+  return data
+}
 
 export const getUserTrips = async () => {
-  const { data } = await API.get("/trip");
-  return data;
-};
+  const { data } = await API.get("/trip/my", { withCredentials: true })
+  return data
+}
 
 export const getTripById = async (id) => {
-  const { data } = await API.get(`/trip/${id}`);
-  return data;
-};
+  const { data } = await API.get(`/trip/${id}`, { withCredentials: true })
+  return data
+}
 
 export const deleteTrip = async (id) => {
-  const { data } = await API.delete(`/trip/${id}`);
-  return data;
-};
+  const { data } = await API.delete(`/trip/${id}`, { withCredentials: true })
+  return data
+}
+
+export const inviteToTrip = async (tripId, email) => {
+  const body = {
+    invitedUserEmail: email,
+  }
+
+  const { data } = await API.post(`/trip/${tripId}/share`, body, { withCredentials: true })
+  return data
+}
+
+export const getTripMembers = async (tripId) => {
+  const { data } = await API.get(`/trip/${tripId}/members`, { withCredentials: true })
+  return data
+}
+
+export const removeFromTrip = async (tripId, email) => {
+  const body = { invitedUserEmail: email }
+  const { data } = await API.delete(`/trip/${tripId}/share`, {
+    data: body,
+    withCredentials: true,
+  })
+  return data
+}
+
+export const getSharedTrips = async () => {
+  const { data } = await API.get("/trip/shared", { withCredentials: true })
+  return data
+}
+
+export const leaveSharedTrip = async (tripId) => {
+  const { data } = await API.delete(`/trip/shared/${tripId}`, { withCredentials: true })
+  return data
+}
 
 // LOCATIONS
 export const getLocations = async () => {
-  const { data } = await API.get("/locations"); // LOCATIONS (for origin/destination dropdown) ---Need to expose this
-  return data;
-};
-
+  const { data } = await API.get("/locations") // LOCATIONS (for origin/destination dropdown) ---Need to expose this
+  return data
+}
