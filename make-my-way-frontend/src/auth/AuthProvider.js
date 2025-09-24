@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import {
   login as loginApi,
   register as registerApi,
@@ -53,7 +53,7 @@ export function AuthProvider({ children }) {
       setLoading(false)
     }
     tryRefresh()
-  }, [])
+  }, )
 
   const handleLogin = async (email, password) => {
     try {
