@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import {
   login as loginApi,
   register as registerApi,
@@ -87,21 +87,6 @@ export function AuthProvider({ children }) {
     }
   }
 
-  const handleLogout = async () => {
-    try {
-      if (token) await logoutApi(token)
-      localStorage.removeItem("token")
-      delete API.defaults.headers.common["Authorization"]
-    } catch (err) {
-      console.error("Logout error", err)
-    } finally {
-      setActiveUser(null)
-      setToken(null)
-      setRefreshToken(null)
-      localStorage.removeItem("token")
-      localStorage.removeItem("refreshToken")
-    }
-  }
 
   return (
     <AuthContext.Provider

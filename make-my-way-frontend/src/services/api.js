@@ -76,6 +76,7 @@ export const getTripPath = async (tripPathRequest) => {
 
 export const saveTrip = async (tripData) => {
   const { data } = await API.post("/trip", tripData, { withCredentials: true })
+  console.log("Saving trip with data:", tripData);
   return data
 }
 
@@ -129,6 +130,6 @@ export const leaveSharedTrip = async (tripId) => {
 
 // LOCATIONS
 export const getLocations = async () => {
-  const { data } = await API.get("/locations") // LOCATIONS (for origin/destination dropdown) ---Need to expose this
+  const { data } = await API.get("/locations") 
   return data
 }

@@ -121,7 +121,7 @@ export default function TripSummary() {
       </div>
 
       <div className="itinerary">
-        {geminiPlan.itinerary.map((day, dayIdx) => (
+        {geminiPlan?.itinerary?.map((day, dayIdx) => (
           <div key={dayIdx} className="day-block">
             <h3>Day {day.day}</h3>
 
@@ -151,7 +151,7 @@ export default function TripSummary() {
                           <div className="opening-hours">
                             <strong>Hours:</strong>
                             <ul>
-                              {place.openingHours.map((h, idx) => {
+                              {place.openingHours?.map((h, idx) => {
                                 const dayName = daysOfWeek[h.open?.day ?? h.close?.day ?? idx]
                                 const openTime = h.open?.time ? formatTime(h.open.time) : ""
                                 const closeTime = h.close?.time ? formatTime(h.close.time) : ""
