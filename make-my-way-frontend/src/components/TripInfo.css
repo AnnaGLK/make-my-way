@@ -1,0 +1,202 @@
+.trip-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  gap: 20px;
+}
+
+/* Left column */
+.trip-info {
+  flex: 2;
+}
+
+.trip-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.label {
+  font-weight: 600;
+}
+
+.itinerary-heading {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 16px 0 8px;
+}
+
+.itinerary-day {
+  margin-bottom: 16px;
+  padding-left: 12px;
+  border-left: 2px solid #ccc;
+}
+
+.day-title {
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.activity-list {
+  list-style: disc;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.activity-item {
+  margin-bottom: 10px;
+}
+
+.activity-header {
+  font-size: 15px;
+}
+
+.category {
+  color: #666;
+  font-size: 14px;
+}
+
+.activity-address {
+  font-size: 14px;
+  color: #555;
+  margin: 2px 0;
+}
+
+.map-link {
+  font-size: 14px;
+  color: #0066cc;
+  text-decoration: underline;
+}
+
+.map-link:hover {
+  color: #004799;
+}
+
+.empty-itinerary {
+  color: #888;
+  font-style: italic;
+}
+
+/* Right column */
+.trip-actions {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.delete-btn {
+  background-color: #e53935;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.delete-btn:hover {
+  background-color: #c62828;
+}
+
+.invite-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.invite-form input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.invite-btn {
+  background-color: #1976d2;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.invite-btn:hover {
+  background-color: #0d47a1;
+}
+
+.members-list {
+  margin-top: 20px;
+}
+
+.members-list h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.member-item {
+  display: flex;
+  justify-content: space-between; /* инфо слева, кнопка справа */
+  align-items: center;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  background: #fafafa;
+}
+
+.member-info {
+  display: flex;
+  flex-direction: column; /* имя / email / роль в столбик */
+  gap: 2px;
+}
+
+.remove-btn {
+  background-color: #f44336;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.remove-btn:hover {
+  background-color: #d32f2f;
+}
+
+.leave-btn {
+  background-color: #ff9800;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.leave-btn:hover {
+  background-color: #e68900;
+}
+
+.pdf-btn {
+  display: inline-block;
+  margin: 10px 0;
+  padding: 6px 12px;
+  background-color: #4caf50;
+  color: white;
+  font-weight: 600;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.pdf-btn:hover {
+  background-color: #388e3c;
+}
