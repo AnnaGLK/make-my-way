@@ -7,6 +7,7 @@ import {
   removeFromTrip,
   leaveSharedTrip,
 } from "../services/api.js"
+import TripMap from "./TripMap.jsx"
 
 const formatDate = (dateString) => {
   if (!dateString) return ""
@@ -105,6 +106,14 @@ const TripInfo = ({ trip, isOwner }) => {
             <span className="label">Dates:</span> {formatDate(tripInfo.startDate)} —{" "}
             {formatDate(tripInfo.endDate)}
           </p>
+        )}
+
+        {trip.tripPath && originInfo?.coordinates && (
+          <TripMap
+            path={trip.tripPath}
+            origin={originInfo.coordinates}
+            destination={destinationInfo?.coordinates}
+          />
         )}
 
         {pdfUrl && (
