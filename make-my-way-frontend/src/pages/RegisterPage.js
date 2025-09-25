@@ -39,7 +39,8 @@ export function RegisterPage() {
             await onLogin(form.email, form.password);
             navigate("/");
         } catch (err) {
-            setRegisterError(err.response?.data?.error || "Registration failed");
+            console.log(err);
+            setRegisterError(err.response?.data?.message || "Registration failed");
         } finally {
             setLoading(false);
         }

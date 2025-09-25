@@ -74,7 +74,7 @@ export function LoginPage() {
                 role="alert"
               >
                 <i className="bi bi-exclamation-circle me-2"></i>
-                <div>{loginError.message || "Login failed"}</div>
+                <div>{loginError || "Login failed"}</div>
               </div>
             )}
 
