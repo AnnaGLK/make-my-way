@@ -100,6 +100,7 @@ export function LoginPage() {
                   type="password"
                   className={`form-control ${errors.password ? "is-invalid" : ""}`}
                   value={password}
+                  placeholder="Enter your password"
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 {errors.password && <div className="invalid-feedback">{errors.password}</div>}
