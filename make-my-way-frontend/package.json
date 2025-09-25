@@ -1,7 +1,7 @@
 {
   "name": "make-my-way-frontend",
   "version": "0.1.0",
-  "homepage": "https://AnnaGLK.github.io/make-my-way",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@mapbox/polyline": "^1.2.1",
