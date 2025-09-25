@@ -1,69 +1,51 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import {
-  login as loginApi,
-  register as registerApi,
-  logout as logoutApi,
-  refresh as refreshApi,
-} from "../services/api"
+import { createContext, useContext, useEffect, useState } from "react"
+import { login as loginApi, register as registerApi, logout as logoutApi } from "../services/api"
 import { API } from "../services/api"
 
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
-  const [activeUser, setActiveUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem("token") || null);
-  const [refreshToken, setRefreshToken] = useState(
-    localStorage.getItem("refreshToken") || null
-  );
-  const [loading, setLoading] = useState(true);
+  const [activeUser, setActiveUser] = useState(null)
+  const [token, setToken] = useState(null) // 👈 фиктивный маркер авторизации
+  const [loading, setLoading] = useState(true)
 
   const handleLogout = async () => {
     try {
-      if (token) await logoutApi(token);
-      localStorage.removeItem("token");
-        delete API.defaults.headers.common["Authorization"];
+      await logoutApi()
+      delete API.defaults.headers.common["Authorization"]
     } catch (err) {
-      console.error("Logout error", err);
+      console.error("Logout error", err)
     } finally {
-      setActiveUser(null);
-      setToken(null);
-      setRefreshToken(null);
-      localStorage.removeItem("token");
-      localStorage.removeItem("refreshToken");
+      setActiveUser(null)
+      setToken(null)
     }
-  };
-  
-  useEffect(() => {
-    // try refreshing token on mount
-    const tryRefresh = async () => {
-      if (refreshToken) {
-        try {
-          const data = await refreshApi(refreshToken)
-          if (data.token) {
-            localStorage.setItem("token", data.token)
-            API.defaults.headers.common["Authorization"] = `Bearer ${data.token}`
+  }
 
-            setActiveUser(data.user)
-          }
-        } catch (err) {
-          console.error("Refresh failed", err)
-          await handleLogout()
-        }
+  // Проверяем сессию по /auth/me
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await API.get("/auth/me", { withCredentials: true })
+        setActiveUser(res.data.user)
+        setToken("cookie") // 👈 ставим маркер, что пользователь авторизован
+      } catch (err) {
+        console.error("Auth check failed", err)
+        setActiveUser(null)
+        setToken(null)
+      } finally {
+        setLoading(false)
       }
-      setLoading(false)
     }
-    tryRefresh()
-  }, )
+    checkAuth()
+  }, [])
 
   const handleLogin = async (email, password) => {
     try {
       const data = await loginApi({ email, password })
-
-      if (data.token) {
-        localStorage.setItem("token", data.token)
-        API.defaults.headers.common["Authorization"] = `Bearer ${data.token}`
-
+      // сервер установит куку автоматически
+      if (data.user) {
         setActiveUser(data.user)
+        setToken("cookie") // 👈 просто флаг
         return data.user
       }
     } catch (err) {
@@ -75,18 +57,16 @@ export function AuthProvider({ children }) {
   const handleRegister = async (username, email, password) => {
     try {
       const data = await registerApi({ username, email, password })
-      if (data.token) {
-        localStorage.setItem("token", data.token)
-        API.defaults.headers.common["Authorization"] = `Bearer ${data.token}`
-
-        return data
+      if (data.user) {
+        setActiveUser(data.user)
+        setToken("cookie")
+        return data.user
       }
     } catch (err) {
       console.error(err)
       throw err
     }
   }
-
 
   return (
     <AuthContext.Provider

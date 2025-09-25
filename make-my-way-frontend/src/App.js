@@ -9,6 +9,7 @@ import TripSummary from "./components/TripSummary"
 import TripResults from "./pages/TripResults"
 
 import TripDetails from "./pages/TripDetails"
+import ProtectedRoute from "./auth/ProtectedRoute.js"
 
 // Create these files next: src/routes/HomePage.jsx, TripResults.jsx, Dashboard.jsx, LoginPage.js
 // const HomePage = lazy(() => import('./routes/trip.routes'));
@@ -34,16 +35,51 @@ export default function App() {
           }
         >
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/tripform" element={<TripFormPage />} />
             <Route path="/login" element={<LoginPage />} />
-
             <Route path="/register" element={<RegisterPage />} />
 
-            <Route path="/summary" element={<TripSummary />} />
-            <Route path="/results" element={<TripResults />} />
-            <Route path="/trip/:tripId" element={<TripDetails />} />
-            {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <HomePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tripform"
+              element={
+                <ProtectedRoute>
+                  <TripFormPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/summary"
+              element={
+                <ProtectedRoute>
+                  <TripSummary />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/results"
+              element={
+                <ProtectedRoute>
+                  <TripResults />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/trip/:tripId"
+              element={
+                <ProtectedRoute>
+                  <TripDetails />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* fallback */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
