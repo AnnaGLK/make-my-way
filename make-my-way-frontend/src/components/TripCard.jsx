@@ -2,16 +2,17 @@ import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import TripMap from "./TripMap.jsx";
 import polyline from "@mapbox/polyline";
-import "./TripCard.css"; // make sure to create/update this
+import {useTripStore} from "../stores/tripStore.js"
+import "./TripCard.css";
 
 const TripCard = ({ trip }) => {
+  const {setPdfUrl} = useTripStore()
   const navigate = useNavigate();
-
   const handleClick = () => {
+    setPdfUrl(trip.pdfUrl)
     navigate(`/trip/${trip.id || trip._id}`);
   };
 
-  // Decode polyline for mini map
   const decodedPath = useMemo(() => {
     if (!trip.tripPath) return [];
     return polyline.decode(trip.tripPath).map(([lat, lng]) => ({ lat, lng }));
@@ -27,7 +28,7 @@ const TripCard = ({ trip }) => {
           path={trip.tripPath}
           origin={origin}
           destination={trip.destinationInfo?.coordinates}
-          small={true} // optional prop to render smaller map
+          small={true}
         />
       )}
 

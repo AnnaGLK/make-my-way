@@ -1,6 +1,6 @@
 .trip-card {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
@@ -189,17 +189,12 @@
   background-color: #e68900;
 }
 
-/* .pdf-btn {
-  display: inline-block;
-  margin: 10px 0;
-  padding: 6px 12px;
-  background-color: #4caf50;
-  color: white;
-  font-weight: 600;
-  border-radius: 6px;
-  text-decoration: none;
+.pdf-btn {
+  margin-top: 1rem;
 }
 
-.pdf-btn:hover {
-  background-color: #388e3c;
-} */
+ @media only screen and (max-width: 600px) {
+.trip-card {
+  flex-direction: column;}
+
+}

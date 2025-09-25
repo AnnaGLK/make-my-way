@@ -21,7 +21,7 @@ const TripResults = () => {
   }, []);
 
   return (
-    <div className="container">
+    <div className="container mt-4">
       <h1>My Trips</h1>
       {ownTrips.length === 0 ? (
         <p>You have no saved trips yet.</p>
