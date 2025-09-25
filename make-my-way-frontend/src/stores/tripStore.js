@@ -23,6 +23,8 @@ export const useTripStore = create(
     geminiPlan: {},
     itinerary: [],
 
+    currentTrip: null,
+
     setOrigin: (origin) => set(() => ({ origin }), false, "setOrigin"),
     setDestination: (destination) => set(() => ({ destination }), false, "setDestination"),
     setStartDay: (startDay) => set(() => ({ startDay }), false, "setStartDay"),
@@ -105,5 +107,7 @@ export const useTripStore = create(
         false,
         `selectPlace_day${day}_cat_${category}`
       ),
+
+    setCurrentTrip: (trip) => set(() => ({ currentTrip: trip }), false, "setCurrentTrip"),
   }))
 )

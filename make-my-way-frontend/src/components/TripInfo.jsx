@@ -8,7 +8,6 @@ import {
   leaveSharedTrip,
 } from "../services/api.js"
 import TripMap from "./TripMap.jsx"
-import {useTripStore} from "../stores/tripStore.js"
 
 const formatDate = (dateString) => {
   if (!dateString) return ""
@@ -16,8 +15,6 @@ const formatDate = (dateString) => {
 }
 
 const TripInfo = ({ trip, isOwner }) => {
-  const {pdfUrl} = useTripStore()
-  console.log(" pdfUrl: ", pdfUrl)
   const [inviteEmail, setInviteEmail] = useState("")
   const [members, setMembers] = useState([])
   const tripId = trip?.id || trip?._id
@@ -34,8 +31,6 @@ const TripInfo = ({ trip, isOwner }) => {
     }
     fetchMembers()
   }, [tripId, isOwner])
-
-  if (!trip) return null
 
   const { tripInfo, originInfo, destinationInfo, itinerary } = trip
 
@@ -118,12 +113,16 @@ const TripInfo = ({ trip, isOwner }) => {
           />
         )}
 
-        {pdfUrl && (
-          <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary pdf-btn">
+        {trip.pdfUrl && (
+          <a
+            href={trip.pdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary pdf-btn"
+          >
             Download PDF
           </a>
         )}
-
 
         <h3 className="itinerary-heading">Itinerary</h3>
         {itinerary && itinerary.length > 0 ? (

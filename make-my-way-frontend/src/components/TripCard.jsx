@@ -1,24 +1,25 @@
-import React, { useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import TripMap from "./TripMap.jsx";
-import polyline from "@mapbox/polyline";
-import {useTripStore} from "../stores/tripStore.js"
-import "./TripCard.css";
+import React, { useMemo } from "react"
+import { useNavigate } from "react-router-dom"
+import TripMap from "./TripMap.jsx"
+import polyline from "@mapbox/polyline"
+import { useTripStore } from "../stores/tripStore.js"
+import "./TripCard.css"
 
-const TripCard = ({ trip }) => {
-  const {setPdfUrl} = useTripStore()
-  const navigate = useNavigate();
+const TripCard = ({ trip, isOwner }) => {
+  const { setCurrentTrip } = useTripStore()
+  const navigate = useNavigate()
   const handleClick = () => {
-    setPdfUrl(trip.pdfUrl)
-    navigate(`/trip/${trip.id || trip._id}`);
-  };
+    trip.isOwner = isOwner
+    setCurrentTrip(trip)
+    navigate(`/trip/${trip.id || trip._id}`)
+  }
 
   const decodedPath = useMemo(() => {
-    if (!trip.tripPath) return [];
-    return polyline.decode(trip.tripPath).map(([lat, lng]) => ({ lat, lng }));
-  }, [trip.tripPath]);
+    if (!trip.tripPath) return []
+    return polyline.decode(trip.tripPath).map(([lat, lng]) => ({ lat, lng }))
+  }, [trip.tripPath])
 
-  const origin = trip.originInfo?.coordinates;
+  const origin = trip.originInfo?.coordinates
 
   return (
     <div className="trip-card-small" onClick={handleClick}>
@@ -46,7 +47,7 @@ const TripCard = ({ trip }) => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default TripCard;
+export default TripCard
