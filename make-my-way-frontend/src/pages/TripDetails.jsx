@@ -1,29 +1,36 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import TripInfo from "../components/TripInfo";
-import { getTripById } from "../services/api";
+import React, { useEffect } from "react"
+import { useParams, Navigate } from "react-router-dom"
+import TripInfo from "../components/TripInfo"
+import { useTripStore } from "../stores/tripStore.js"
+import { getTripById } from "../services/api.js"
 
-const TripDetails = ({ currentUserEmail }) => {
-  const { tripId } = useParams();
-  const [trip, setTrip] = useState(null);
+const TripDetails = () => {
+  const { tripId } = useParams()
+
+  const { currentTrip, setCurrentTrip } = useTripStore()
 
   useEffect(() => {
     const fetchTrip = async () => {
-      try {
-        const data = await getTripById(tripId);
-        const owner = data.members?.find((m) => m.role === "owner");
-        data.isOwner = owner?.email === currentUserEmail;
-        setTrip(data);
-      } catch (error) {
-        console.error("Error fetching trip details:", error);
+      if (!currentTrip || (currentTrip.id || currentTrip._id) !== tripId) {
+        try {
+          const data = await getTripById(tripId)
+
+          if (data) {
+            setCurrentTrip(data)
+          }
+        } catch (error) {
+          console.error("Error fetching trip:", error)
+        }
       }
-    };
-    fetchTrip();
-  }, [tripId, currentUserEmail]);
+    }
+    fetchTrip()
+  }, [tripId, currentTrip, setCurrentTrip])
 
-  if (!trip) return <p>Loading trip details...</p>;
+  if (!currentTrip) {
+    return <Navigate to="/results" replace />
+  }
 
-  return <TripInfo trip={trip} isOwner={trip.isOwner} />;
-};
+  return <TripInfo trip={currentTrip} isOwner={currentTrip.isOwner} />
+}
 
-export default TripDetails;
+export default TripDetails
