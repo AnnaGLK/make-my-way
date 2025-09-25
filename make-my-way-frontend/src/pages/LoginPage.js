@@ -1,40 +1,40 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../auth/AuthProvider";
-import "../styles/LoginPage.css";
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { useAuth } from "../auth/AuthProvider"
+import "../styles/LoginPage.css"
 // import "bootstrap/dist/css/bootstrap.min.css";
 
 export function LoginPage() {
-  const [email, setEmail] = useState("travler@example.com");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [loginError, setLoginError] = useState(null);
-  const { onLogin } = useAuth();
-  const navigate = useNavigate();
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [errors, setErrors] = useState({})
+  const [loading, setLoading] = useState(false)
+  const [loginError, setLoginError] = useState(null)
+  const { onLogin } = useAuth()
+  const navigate = useNavigate()
 
   const validate = () => {
-    const newErrors = {};
+    const newErrors = {}
     if (!/^\S+@\S+\.\S+$/.test(email)) {
-      newErrors.email = "Invalid email";
+      newErrors.email = "Invalid email"
     }
     if (password.length < 6) {
-      newErrors.password = "Password should include at least 6 characters";
+      newErrors.password = "Password should include at least 6 characters"
     }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
   async function handleLogin(e) {
-    e.preventDefault();
-    setLoginError(null);
+    e.preventDefault()
+    setLoginError(null)
 
-    if (!validate()) return;
+    if (!validate()) return
 
-    setLoading(true);
+    setLoading(true)
     try {
-      await onLogin(email, password);
-      navigate("/");
+      await onLogin(email, password)
+      navigate("/")
     } catch (err) {
       const message =
         (err.response &&
@@ -42,10 +42,10 @@ export function LoginPage() {
             err.response.data.message ||
             JSON.stringify(err.response.data))) ||
         err.message ||
-        "Login failed";
-      setLoginError(message);
+        "Login failed"
+      setLoginError(message)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
@@ -69,10 +69,7 @@ export function LoginPage() {
 
           <div>
             {loginError && (
-              <div
-                className="alert alert-danger d-flex align-items-center"
-                role="alert"
-              >
+              <div className="alert alert-danger d-flex align-items-center" role="alert">
                 <i className="bi bi-exclamation-circle me-2"></i>
                 <div>{loginError || "Login failed"}</div>
               </div>
@@ -89,10 +86,9 @@ export function LoginPage() {
                   className={`form-control ${errors.email ? "is-invalid" : ""}`}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  placeholder="example@example.com"
                 />
-                {errors.email && (
-                  <div className="invalid-feedback">{errors.email}</div>
-                )}
+                {errors.email && <div className="invalid-feedback">{errors.email}</div>}
               </div>
 
               <div className="mb-3">
@@ -102,22 +98,14 @@ export function LoginPage() {
                 <input
                   id="password"
                   type="password"
-                  className={`form-control ${
-                    errors.password ? "is-invalid" : ""
-                  }`}
+                  className={`form-control ${errors.password ? "is-invalid" : ""}`}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                {errors.password && (
-                  <div className="invalid-feedback">{errors.password}</div>
-                )}
+                {errors.password && <div className="invalid-feedback">{errors.password}</div>}
               </div>
 
-              <button
-                type="submit"
-                className="btn btn-primary w-100"
-                disabled={loading}
-              >
+              <button type="submit" className="btn btn-primary w-100" disabled={loading}>
                 {loading ? (
                   <span
                     className="spinner-border spinner-border-sm"
@@ -133,5 +121,5 @@ export function LoginPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }
