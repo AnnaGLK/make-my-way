@@ -1,0 +1,37 @@
+.trip-card-small {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin: 1rem;
+}
+
+.trip-card-small:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.trip-card-content {
+  padding: 0.8rem 1rem;
+}
+
+.trip-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--brand); 
+  margin-bottom: 0.4rem;
+}
+
+.trip-mode,
+.trip-dates {
+  font-size: 0.85rem;
+  color: var(--brand-dark); 
+}
+
+
+.trip-card-small .gmaps-container {
+  height: 120px !important;
+  width: 100% !important;
+  border-bottom: 1px solid #00c16d;
+}

@@ -1,7 +1,6 @@
 .trip-card {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: column;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
@@ -70,12 +69,12 @@
 
 .map-link {
   font-size: 14px;
-  color: #0066cc;
+  color: var(--brand);
   text-decoration: underline;
 }
 
 .map-link:hover {
-  color: #004799;
+  color: var(--brand);
 }
 
 .empty-itinerary {
@@ -118,8 +117,7 @@
 }
 
 .invite-btn {
-  background-color: #1976d2;
-  color: white;
+  background-color: var(--brand);
   padding: 8px 12px;
   border: none;
   border-radius: 6px;
@@ -128,11 +126,17 @@
 }
 
 .invite-btn:hover {
-  background-color: #0d47a1;
+  background-color: var(--brand);
 }
 
 .members-list {
   margin-top: 20px;
+}
+.members-list ul {
+  display: flex;
+  flex-flow: wrap;
+  gap: 0.5rem;
+      padding-left: 0;
 }
 
 .members-list h4 {
@@ -162,10 +166,9 @@
   background-color: #f44336;
   color: #fff;
   border: none;
-  padding: 6px 10px;
   border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
+  font-size: 12px;
+  margin-left: 0.5rem;
 }
 
 .remove-btn:hover {
@@ -186,7 +189,7 @@
   background-color: #e68900;
 }
 
-.pdf-btn {
+/* .pdf-btn {
   display: inline-block;
   margin: 10px 0;
   padding: 6px 12px;
@@ -199,4 +202,4 @@
 
 .pdf-btn:hover {
   background-color: #388e3c;
-}
+} */

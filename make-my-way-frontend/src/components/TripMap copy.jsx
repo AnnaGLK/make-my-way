@@ -1,12 +1,8 @@
 import React, { useMemo } from "react"
-import { GoogleMap, LoadScript, Polyline, useJsApiLoader } from "@react-google-maps/api"
+import { GoogleMap, LoadScript, Polyline } from "@react-google-maps/api"
 import polyline from "@mapbox/polyline"
 
 const TripMap = ({ path, origin }) => {
-  const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
-  });
-
   const decodedPath = useMemo(() => {
     if (!path) return []
     return polyline.decode(path).map(([lat, lng]) => ({ lat, lng }))
@@ -18,12 +14,9 @@ const TripMap = ({ path, origin }) => {
 
   const mapContainerStyle = {
     width: "100%",
-    height: "250px",
+    height: "200px",
     borderRadius: "8px",
   }
-
-  if (loadError) return <p>Error loading map</p>;
-  if (!isLoaded) return <p>Loading map...</p>;
 
   return (
     <GoogleMap

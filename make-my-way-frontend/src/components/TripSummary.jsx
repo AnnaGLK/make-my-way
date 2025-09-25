@@ -95,7 +95,7 @@ export default function TripSummary() {
       console.log("Final trip to save:", finalTrip)
 
       await saveTrip(finalTrip)
-      alert("Trip saved successfully!")
+      // alert("Trip saved successfully!")
       navigate("/results")
     } catch (err) {
       console.error("Save trip error:", err)

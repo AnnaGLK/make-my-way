@@ -122,7 +122,8 @@
   flex-shrink: 1;
   flex-basis: calc(50% - 16px);
   height: 150px;
-  border: none;
+  /* border: none; */
+  border: var(--brand) 2px solid;
   border-radius: 12px;
   background-position: center;
   color: var(--brand);
@@ -141,13 +142,13 @@
   flex-direction: column;
 }
 
-.option-btn::before {
+/* .option-btn::before {
   content: "";
   position: absolute;
   inset: 0;
   background: rgba(52, 54, 51, 0.3);
   border-radius: 12px;
-}
+} */
 .travelMode-btn.option-btn::before {
   background: none;
 }

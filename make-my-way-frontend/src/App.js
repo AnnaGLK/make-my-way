@@ -8,6 +8,8 @@ import { RegisterPage } from "./pages/RegisterPage"
 import TripSummary from "./components/TripSummary"
 import TripResults from "./pages/TripResults"
 
+import TripDetails from "./pages/TripDetails"
+
 // Create these files next: src/routes/HomePage.jsx, TripResults.jsx, Dashboard.jsx, LoginPage.js
 // const HomePage = lazy(() => import('./routes/trip.routes'));
 // const TripResults = lazy(() => import('./routes/TripResults'));
@@ -40,6 +42,7 @@ export default function App() {
 
             <Route path="/summary" element={<TripSummary />} />
             <Route path="/results" element={<TripResults />} />
+            <Route path="/trip/:tripId" element={<TripDetails />} />
             {/* <Route path="/dashboard" element={<Dashboard />} /> */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

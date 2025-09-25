@@ -322,7 +322,7 @@ export default function TripForm() {
                 )}
 
                 {/* Navigation Buttons */}
-                <div className="tripform-actions d-flex">
+                <div className="tripform-actions d-flex p-3">
                     {step > 1 ? (
                         <button type="button" className="btn btn-secondary trip-btn" onClick={prevStep}>
                             Prev

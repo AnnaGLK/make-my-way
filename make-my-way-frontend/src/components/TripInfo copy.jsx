@@ -117,7 +117,7 @@ const TripInfo = ({ trip, isOwner }) => {
         )}
 
         {pdfUrl && (
-          <a href={trip.pdfUrl || trip.pdf || "https://example.com/test.pdf"} target="_blank" rel="noopener noreferrer" className="btn btn-primary pdf-btn">
+          <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary pdf-btn">
             Download PDF
           </a>
         )}
@@ -183,12 +183,12 @@ const TripInfo = ({ trip, isOwner }) => {
                     <li key={m.id} className="member-item">
                       <div className="member-info">
                         <div>{m.name}</div>
-                        {/* <div>{m.email}</div> */}
+                        <div>{m.email}</div>
                         <div>{m.role}</div>
                       </div>
                       {m.role !== "owner" && (
                         <button className="remove-btn" onClick={() => handleRemoveMember(m.email)}>
-                          X
+                          Remove
                         </button>
                       )}
                     </li>

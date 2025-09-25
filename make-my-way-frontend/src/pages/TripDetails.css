@@ -1,0 +1,97 @@
+.trip-details-wrapper {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.trip-main {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.trip-sidebar {
+  background: #fafafa;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.trip-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.itinerary-heading {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.itinerary-day {
+  margin-bottom: 1.5rem;
+}
+
+.activity-item {
+  margin: 0.5rem 0;
+}
+
+.delete-btn,
+.leave-btn,
+.remove-btn {
+  background: #e74c3c;
+  border: none;
+  padding: 0.6rem 1rem;
+  color: #fff;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.btn-primary,
+.pdf-btn {
+  background: #0077ff;
+  border: none;
+  padding: 0.6rem 1rem;
+  color: #fff;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.invite-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.invite-form input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+}
+
+.members-list {
+  margin-top: 2rem;
+}
+
+.member-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+@media (max-width: 900px) {
+  .trip-details-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .trip-sidebar {
+    margin-top: 2rem;
+  }
+}
