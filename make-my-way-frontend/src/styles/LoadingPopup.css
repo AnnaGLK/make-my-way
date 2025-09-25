@@ -14,7 +14,7 @@
 
 .loading-icon {
   width: 100px;
-  height: 100px;
+  height: 150px;
   animation: flip 1.2s infinite linear;
 }
 
