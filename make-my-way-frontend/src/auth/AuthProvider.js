@@ -6,7 +6,7 @@ const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
   const [activeUser, setActiveUser] = useState(null)
-  const [token, setToken] = useState(null) // 👈 фиктивный маркер авторизации
+  const [token, setToken] = useState(null)
   const [loading, setLoading] = useState(true)
 
   const handleLogout = async () => {
@@ -21,15 +21,17 @@ export function AuthProvider({ children }) {
     }
   }
 
-  // Проверяем сессию по /auth/me
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const res = await API.get("/auth/me", { withCredentials: true })
         setActiveUser(res.data.user)
-        setToken("cookie") // 👈 ставим маркер, что пользователь авторизован
+        setToken("cookie")
       } catch (err) {
-        console.error("Auth check failed", err)
+        // 👉 глушим именно 401
+        if (err.response?.status !== 401) {
+          console.error("Auth check error:", err)
+        }
         setActiveUser(null)
         setToken(null)
       } finally {
@@ -42,10 +44,9 @@ export function AuthProvider({ children }) {
   const handleLogin = async (email, password) => {
     try {
       const data = await loginApi({ email, password })
-      // сервер установит куку автоматически
       if (data.user) {
         setActiveUser(data.user)
-        setToken("cookie") // 👈 просто флаг
+        setToken("cookie")
         return data.user
       }
     } catch (err) {
