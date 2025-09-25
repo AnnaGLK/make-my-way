@@ -108,6 +108,7 @@ export function LoginPage() {
                     errors.password ? "is-invalid" : ""
                   }`}
                   value={password}
+                  placeholder="Enter your password"
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 {errors.password && (

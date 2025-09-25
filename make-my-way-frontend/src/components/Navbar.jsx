@@ -1,15 +1,23 @@
 // src/components/Navbar.jsx
 import React from "react"
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import Logo from "../assets/logo.png"
 import "../styles/Navbar.css"
+import { useAuth } from "../auth/AuthProvider"
 
 export default function Navbar() {
+  const { activeUser, onLogout } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    await onLogout()
+    navigate("/login")
+  }
+
   return (
     <nav className="navbar navbar-expand-lg sticky-top shadow-sm">
       <div className="container-fluid">
         <NavLink to="/" className="navbar-brand d-flex align-items-center">
-          {/* <img src={process.env.PUBLIC_URL + '/media/logo.png'} alt="MakeMyWay" width="auto" height="36" className="me-2"/> */}
           <img src={Logo} alt="MakeMyWay" width="auto" height="36" className="me-2" />
         </NavLink>
 
@@ -28,34 +36,44 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="mainNavbar">
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
             <li className="nav-item">
-              <NavLink
-                to="/"
-                end
-                className={({ isActive }) => "nav-link px-3" + (isActive ? " active" : "")}
-              >
-                Plan
-              </NavLink>
+              {activeUser && (
+                <NavLink
+                  to="/"
+                  end
+                  className={({ isActive }) => "nav-link px-3" + (isActive ? " active" : "")}
+                >
+                  Plan
+                </NavLink>
+              )}
             </li>
             <li className="nav-item">
-              <NavLink
-                to="/results"
-                className={({ isActive }) => "nav-link px-3" + (isActive ? " active" : "")}
-              >
-                Results
-              </NavLink>
+              {activeUser && (
+                <NavLink
+                  to="/results"
+                  className={({ isActive }) => "nav-link px-3" + (isActive ? " active" : "")}
+                >
+                  Results
+                </NavLink>
+              )}
             </li>
-            {/* <li className="nav-item">
-              <NavLink to="/dashboard" className={({ isActive }) => 'nav-link px-3' + (isActive ? ' active' : '')}>
-                Dashboard
-              </NavLink>
-            </li> */}
+
             <li className="nav-item">
-              <NavLink
-                to="/login"
-                className={({ isActive }) => "nav-link px-3" + (isActive ? " active" : "")}
-              >
-                Login
-              </NavLink>
+              {activeUser ? (
+                <button
+                  onClick={handleLogout}
+                  className="btn btn-link nav-link px-3"
+                  style={{ border: "none", background: "none" }}
+                >
+                  Logout
+                </button>
+              ) : (
+                <NavLink
+                  to="/login"
+                  className={({ isActive }) => "nav-link px-3" + (isActive ? " active" : "")}
+                >
+                  Login
+                </NavLink>
+              )}
             </li>
           </ul>
         </div>
