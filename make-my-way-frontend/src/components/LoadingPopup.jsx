@@ -6,7 +6,7 @@ export default function LoadingPopup() {
     return (
         <div className="loading-overlay">
             <img
-                src="../../media/favicon.png"
+                src="../assets/favicon.png"
                 alt="Loading..."
                 className="loading-icon"
             />
