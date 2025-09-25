@@ -44,11 +44,6 @@ export default function Navbar() {
                 Results
               </NavLink>
             </li>
-            {/* <li className="nav-item">
-              <NavLink to="/dashboard" className={({ isActive }) => 'nav-link px-3' + (isActive ? ' active' : '')}>
-                Dashboard
-              </NavLink>
-            </li> */}
             <li className="nav-item">
               <NavLink
                 to="/login"
