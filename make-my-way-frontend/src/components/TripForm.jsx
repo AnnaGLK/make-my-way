@@ -6,6 +6,7 @@ import { searchCities } from "../services/geoDB"
 import DebouncedInput from "./DebouncedInput"
 import { useTripStore } from "../stores/tripStore"
 import { useNavigate } from "react-router-dom"
+import LoadingPopup from "./LoadingPopup"
 
 const TRAVEL_STYLES = ["Urban Explorer", "Culture & History", "Chill & Relax", "Adventure Mode"]
 const TRAVEL_MODES = ["driving", "bike", "walk"]
@@ -28,8 +29,8 @@ export default function TripForm() {
     const [step, setStep] = useState(1)
     const [originSuggestions, setOriginSuggestions] = useState([])
     const [destinationSuggestions, setDestinationSuggestions] = useState([])
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
-
     const {
         origin,
         destination,
@@ -63,6 +64,8 @@ export default function TripForm() {
             food,
         }
 
+        setLoading(true)
+
         try {
             const tripInfo = await planTrip(tripData)
 
@@ -74,6 +77,8 @@ export default function TripForm() {
         } catch (err) {
             console.error("Plan trip error:", err)
             alert("Failed to plan trip.")
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -335,12 +340,26 @@ export default function TripForm() {
                             Next
                         </button>
                     ) : (
-                        <button type="button" className="btn btn-success trip-btn" onClick={handleSubmit}>
-                            Let’s Go!
+                        <button
+                            type="button"
+                            className="btn btn-success trip-btn"
+                            onClick={handleSubmit}
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <span
+                                    className="spinner-border spinner-border-sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                ></span>
+                            ) : (
+                                "Let’s Go!"
+                            )}
                         </button>
                     )}
                 </div>
             </div>
+            {loading && <LoadingPopup />}
         </div>
     )
 }

@@ -1,26 +1,39 @@
 /* ===== CSS ===== */
-.trip-summary {
-  padding: 24px;
-  font-family: Arial, sans-serif;
-}
 
-.trip-header h2 {
-  font-size: 22px;
+.trip-header {
+  text-align: center;
+  height: 30vh;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  width: 100%;
+  background-image: url("../../public/media/hero2.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  align-items: center;
+  justify-content: center;
+}
+.trip-Htitle {
+  font-size: 1.9rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-light, #fff);
+}
+.trip-body h2 {
+  font-size: 1.9rem;
   margin-bottom: 8px;
 }
 
-.trip-header p {
+.trip-body p {
   margin: 4px 0;
   color: #555;
 }
 
-.day-block {
-  margin-bottom: 32px;
-}
-
 .day-block h3 {
-  font-size: 18px;
-  margin-bottom: 12px;
+  font-size: 1.5rem;
+  margin-bottom: 0.9rem;
+  border-top: 3px solid var(--brand);
+  color: var(--brand);
+  text-transform: uppercase;
 }
 
 .category-block h4 {
@@ -32,117 +45,142 @@
 .options-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 1rem;
 }
-
 .place-card {
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  width: 280px;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: #fff;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  flex-direction: column;
+  /* width: 29%; */
+  margin: 1rem;
 }
 
-.place-card:hover {
-  border-color: #aaa;
-}
-
-.place-card.selected {
-  border: 2px solid #007bff;
-  box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
-}
-
-.place-photo {
-  width: 64px;
-  height: 64px;
+.place-photo-top {
+  width: 100%;
+  height: 160px;
   object-fit: cover;
-  border-radius: 6px;
 }
 
 .place-info {
-  flex: 1;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
-.place-info h5 {
-  font-size: 14px;
-  margin: 0 0 4px;
+.place-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
 }
 
-.place-info .address {
-  font-size: 12px;
+.place-address {
+  font-size: 0.9rem;
   color: #666;
-  margin-bottom: 4px;
+  margin-bottom: 0.5rem;
 }
 
-.place-info .rating {
-  font-size: 12px;
-  margin-bottom: 8px;
+.place-summary {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
 }
 
+.place-rating {
+  margin: 0.5rem 0;
+  font-weight: 600;
+  color: var(--brand-primary, #00c16a);
+}
+
+/* Opening hours dropdown */
+.opening-hours summary {
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.opening-hours ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.2rem;
+  font-size: 0.9rem;
+}
+
+/* Action buttons row */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+.action-btn {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+  background: #f0f0f0;
+  color: var(--text);
+ font-weight: 500;
+  border: 1px solid #e6e6e6;
+}
+.action-btn:hover {
+  background: var(--brand-primary-dark, var(--brand));
+}
+
+.act-btn {
+  max-width: 40%;
+  padding: 10px 14px;
+  height: auto;
+  border: 2px solid var(--brand);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--brand);
+  font-family: "Jost", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.act-btn.active,
+.act-btn:hover {
+  background: var(--brand);
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.act-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+/* Select button */
 .select-btn {
-  padding: 4px 8px;
-  font-size: 12px;
-  background: #007bff;
+  margin-top: auto;
+  padding: 0.6rem;
+  border-radius: 8px;
   border: none;
-  border-radius: 4px;
+  background: var(--brand-accent, #ff7f50);
   color: #fff;
   cursor: pointer;
+  font-weight: 600;
 }
-
 .select-btn:hover {
-  background: #0056b3;
+  background: var(--brand-accent-dark, #e56a3f);
 }
 
-.place-info .summary {
-  font-size: 12px;
-  color: #555;
-  margin: 4px 0;
+.swiper-pagination-bullet {
+  margin: -1rem var(--swiper-pagination-bullet-horizontal-gap, 4px);
 }
-
-.opening-hours {
-  font-size: 12px;
-  color: #444;
-  margin-bottom: 4px;
+.swiper-pagination-bullet-active {
+  opacity: var(--brand, 1) !important ;
+  background: var(--brand, var(--brand)) !important;
 }
-
-.phone {
-  font-size: 12px;
-  color: #333;
-  margin-bottom: 4px;
-}
-
-.place-info a {
-  font-size: 12px;
-  color: #0066cc;
-  text-decoration: none;
-}
-
-.place-info a:hover {
-  text-decoration: underline;
-}
-
-.save-block {
-  margin-top: 24px;
-  text-align: right;
-}
-
-.save-btn {
-  padding: 8px 16px;
-  font-size: 14px;
-  background: #28a745;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.save-btn:hover {
-  background: #218838;
+@media (max-width: 576px) {
+  .place-card {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
 }
