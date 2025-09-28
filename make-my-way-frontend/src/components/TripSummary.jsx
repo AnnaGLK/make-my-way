@@ -171,7 +171,7 @@ export default function TripSummary() {
                 }}
                 className="options-swiper"
               >
-                {day.categories[activeTab].options.map((place) => (
+                {day.categories[activeTab].options?.map((place) => (
                   <SwiperSlide key={place.placeId}>
                     <div
                       className={`place-card ${isSelected(day.day, day.categories[activeTab].category, place.placeId)
